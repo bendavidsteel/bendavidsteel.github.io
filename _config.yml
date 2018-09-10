@@ -1,6 +1,7 @@
 name: Ben Steel
 markdown: kramdown
-
+url: 'https://bendavidsteel.github.io/'
+baseurl: ''
 permalink: /blog/:year/:month/:day/:title
 
 plugins:
