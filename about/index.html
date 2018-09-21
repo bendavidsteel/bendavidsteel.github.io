@@ -9,21 +9,21 @@ title: Ben Steel About Me
 	<p>I became interested in software development in high school, after I taught myself python, although initially went to University of Bristol to study Electrical and Electronic Engineering.
      After my exchange year at McGill University in Montreal, Canada, I realised my true interests lay in software development (after a brief stint trying out neuroscience),
      and switched to Computer Science and Electronics. I'm currently in my fourth year in my integrated BEng and MEng course, and eagerly anticipating my career's future!
-	 </p>
+	</p>
 	<p>In my free time I enjoy climbing and cycling in and around Bristol. I enjoy longer backpacking and mountaineering adventures on my holidays.
 	You might just also find me windsurfing on the weekends, if the wind's blowing...</p>
 
 	<div class="activity_row">
-		<div class="activity_pic">
+		<div class="activity_pic" style="float: left">
 			<img src="mountaineering.jpg" alt="Me mountaineering in the alps" style="width:100%">
 		</div>
-		<div class="activity_pic">
+		<div class="activity_pic" style="float: left">
 			<img src="backpacking.jpg" alt="Me on a snowy backpacking trip" style="width:100%">
 		</div>
-		<div class="activity_pic">
+		<div class="activity_pic" style="float: right">
 			<img src="climbing.jpg" alt="Me climbing a rock" style="width:100%">
 		</div>
-		<div class="activity_pic">
+		<div class="activity_pic" style="float: right">
 			<img src="windsurfing.jpg" alt="Me windsurfing" style="width:100%">
 		</div>
 	</div> 
@@ -40,7 +40,131 @@ title: Ben Steel About Me
 
 </div>
 
-<div class="experience" >
-	<h3>Work Experience</h3>
-	<p></p>
+<div class="experience_section" >
+	<h2>Work Experience</h2>
+	<div class="experience" >
+		<figure id="biomusic-screen" style="float: left;">
+			<img src="biomusic.png" alt="A screenshot from the biomusic app" class="experience_image">
+			<figcaption>A screenshot of the (work in progress) data visualisation screen of the biomusic app, with server data loaded in</figcaption>
+		</figure>
+		<h4><a href="http://www.moraeslab.com/biapt/" target="_blank">Biosignal Interaction and Personhood Technology Lab</a></h4>
+		<h5>Android Developer -- May 18 - Aug 18</h5>
+		<p>After my exchange year in Montreal, I worked as the lead developer on the <i>Biomusic</i> Android app in the BIAPT Lab.
+		This app uses a fingertip sensor to gather realtime heart-rate, blood volume pulse, electro-dermal activity, and skin temperature data,
+		and send it to the app where it is used to create 'biomusic' for that user.</p>
+		<p>Its beta users in our lab were mainly families with physically or developmentally disabled children, often with very limited communication ability,
+		where the app was used to provide another communication channel for the parents.
+		I visited the family of one particular child a few times over the summer, to engage them in the development of the project, and gather feedback for the app.</p>
+		<p>My main technical role over the summer was to enable both online and offline database storage functionality for the biosignals.
+		I worked with a contracting backend developer who had helped setup a server for the lab, and had created a database using <i>MySQL</i> and a <i>PHP</i> based API,
+		which I used store collected data, and pull from for a data visualisation part of the app.
+		The offline storage was done using the <i><a href="https://realm.io/products/realm-database" target="_blank">Realm</a></i> android library, an alternative to the <i>SQLite</i> database.</p>
+		<p>Another big part of the my role over the summer was creating a data visualisation GUI for the biosignal data using <i>Android Studio</i>.
+		This GUI also allowed comments to be added to the data where emotional states were linked to specific time periods. These comments were then stored in the database.
+		This was intended to be used later on in the lab to find links between the biosignals and emotional states using deep learning techniques.</p>
+		<p>I also developed signal processing algorithms to use for extracting features from the biosignals. I prototyped them in <i>MATLAB</i> and <i>Python</i>, 
+		and also experimented with using machine learning techniques, for example a genetic algorithm to fine tune the parameters of the algorithms.
+		I then implemented these algorithms in the app.</p>
+	</div>
+
+	<div class="experience" >
+		<figure id="visual-graph" style="float: right;">
+			<img src="visualsystemsgraph.png" alt="A heatmap of visual cortex data" class="experience_image">
+			<figcaption>A heatmap of visual cortex data that was the culmination of around two week's processing time</figcaption>
+		</figure>
+		<h4><a href="http://www.bic.mni.mcgill.ca/~amirs/" target="_blank">Visual Systems Lab</a></h4>
+		<h5>Undergraduate Research Assistant -- Sep 17 - Mar 18</h5>
+		<p>During my exchange year in Montreal, I worked in a visual systems lab in the neuroscience department at McGill University.
+		I had always been interested in neuroscience, and wanted to take advantage of McGill University's fame in this area.
+		</p>
+		<p>The work given to me was related to optimising the time taken to complete a retinotopic mapping of a person's visual cortex, 
+		i.e. Where neurons in the brain related to a particular point in a person's field of vision.
+		I was given a large amount of background reading, given my inexpertise with neuroscience, and found it fascinating learning more about the brain, visual system and visual cortex.
+		</p>
+		<p>The actual day to day of the work consisted mostly of writing <i>MATLAB</i> scripts to cross index the two datasets I was using, and create the data visualisations.
+		I also learned a great deal about using Unix based OS, and the <i>Bash</i> command language, which I used to interface with the extremely large number of files I needed for all the data.
+		In fact, due to the huge size of the datasets I was using (on the order of TBs), I needed to make use of the neuroscience department's <i><a href="https://en.wikipedia.org/wiki/Oracle_Grid_Engine">SGE</a></i> computing cluster system,
+		which time consuming processes could be submitted to.
+		</p>
+	</div>
+
+	<div class="experience" >
+		<h4><a href="http://acim.nidec.com/drives/control-techniques" target="_blank">Control Techniques</a></h4>
+		<h5>Summer Intern -- Jun 16 - Aug 16</h5>
+		<p>I secured my internship at Control Techniques by being granted an <a href="http://e3academy.org/scholarships.php" target="_blank">E3 Academy</a> industrial scholarship.
+		I decided to leave the scholarship at the end of the summer due to realising I didn't want a career in electrical engineering,
+		but nevertheless gained some valuable industry experience in a great company.
+		</p>
+		<p>My work over the summer was split into two parts. The first part was in the PCB design team, laying out and tracking PCBs using industry level software.
+		This gave me my first real experience of working in an engineering company, and gave me great experience working as part of a professional team.
+		</p>
+		<p>The second part of the summer I worked in the safety team, debugging an ARM microprocessor via JTAG.
+		I spent my time in the team working towards setting up a password lock on the JTAG.
+		</p>
+	</div>
+</div>
+
+<div class="projects_section" >
+	<h2>Projects</h2>
+	<div class="project" >
+		<figure id="training-screen" style="float: left;">
+			<img src="goodresults.png" alt="Decreasing validation and training error screen" class="project_image">
+			<figcaption>Charts showing the training error exponentially decreasing, and more importantly, the validation error decreasing.</figcaption>
+		</figure>
+		<h4>Embedded Gesture Recognition using Neural Networks</h4>
+		<p>This was the final group project (teams of 2) in an embedded systems course. Over the course up until that point, we'd had been gradually implementing a flexible artificial neural network with back propagation,
+		on a microcontroller system, using <i>LabVIEW</i>. We had used this recently to train a model to recognise the orientation of the system using the onboard accelerometers.
+		However for this project we needed to train a network that could identify digits drawn in the air with the microcontroller system.
+		</p>
+		<p>Implementing the neural network and back propagation algorithm was incredibly interesting,starting from deriving the weight updating functions.
+		We used mean squared error for the loss function, and gradient descent for the training algorithm. We made the network and training as general as possible,
+		with parameters like batch size and learning rate adjustable as the network was training. This proved to hugely helpful later on.
+		</p>
+		<p>Generating the dataset was consisted of me sitting in the lab for 6 hours waving the system around.
+		 It ended up only being me who was able to generate the dataset, and as such, the final model only worked for me. 
+		 The accelerometer data was low pass filtered, but no other preprocessing was done to it other than downsampling.</p>
+		<p>After trying out several network configurations, and fixing some bugs, it worked! 
+		The error would previously drop and then plateau, but we finally got it down to near zero.</p>
+		<p>This was a really exciting introduction into the implementation of machine learning, and I hope I can dive deeper into this fascinating technology at some point.
+		You can read more about the project in our final report for the project <a href="NN_Final_Report.pdf" download="Ben_Steel_NN_Project">here</a> (pdf download).
+		</p>
+	</div>
+
+	<div class="project" >
+		<figure id="feature-faces" style="float: right;">
+			<img src="featuredetection.jpg" alt="Using the Haar cascade algorithm to find facial features" class="project_image">
+			<figcaption>Testing the Haar cascade algorithm to find facial features</figcaption>
+		</figure>
+		<h4>Face Detection and Age Classification using OpenCV</h4>
+		<p>During my exchange year in Montreal, I worked in a visual systems lab in the neuroscience department at McGill University.
+		I had always been interested in neuroscience, and wanted to take advantage of McGill University's fame in this area.
+		</p>
+		<p>The work given to me was related to optimising the time taken to complete a retinotopic mapping of a person's visual cortex, 
+		i.e. Where neurons in the brain related to a particular point in a person's field of vision.
+		I was given a large amount of background reading, given my inexpertise with neuroscience, and found it fascinating learning more about the brain, visual system and visual cortex.
+		</p>
+		<p>The actual day to day of the work consisted mostly of writing <i>MATLAB</i> scripts to cross index the two datasets I was using, and create the data visualisations.
+		I also learned a great deal about using Unix based OS, and the <i>Bash</i> command language, which I used to interface with the extremely large number of files I needed for all the data.
+		In fact, due to the huge size of the datasets I was using (on the order of TBs), I needed to make use of the neuroscience department's <i><a href="https://en.wikipedia.org/wiki/Oracle_Grid_Engine">SGE</a></i> computing cluster system,
+		which time consuming processes could be submitted to.
+		</p>
+	</div>
+
+	<div class="project" >
+		<figure id="fpga-schematic" style="float: left;">
+			<img src="fpga_schematic.png" alt="A schematic for the architecture of our command receiver" class="project_image">
+			<figcaption>A schematic for the architecture of our command receiver</figcaption>
+		</figure>
+		<h4>Peak Detection using an FPGA</h4>
+		<p>I secured my internship at Control Techniques by being granted an <a href="http://e3academy.org/scholarships.php" target="_blank">E3 Academy</a> industrial scholarship.
+		I decided to leave the scholarship at the end of the summer due to realising I didn't want a career in electrical engineering,
+		but nevertheless gained some valuable industry experience in a great company.
+		</p>
+		<p>My work over the summer was split into two parts. The first part was in the PCB design team, laying out and tracking PCBs using industry level software.
+		This gave me my first real experience of working in an engineering company, and gave me great experience working as part of a professional team.
+		</p>
+		<p>The second part of the summer I worked in the safety team, debugging an ARM microprocessor via JTAG.
+		I spent my time in the team working towards setting up a password lock on the JTAG.
+		</p>
+	</div>
 </div>

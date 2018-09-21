@@ -22,7 +22,8 @@ a:hover {
 h1,
 h2,
 h3,
-h4 {
+h4,
+h5 {
     font-family:'Helvetica', 'Arial', 'Sans-Serif';
 }
 
@@ -39,12 +40,16 @@ h3 {
 }
 
 h4 {
-	font-size: 1.2em;
+	font-size: 1.4em;
+}
+
+h5 {
+    font-size: 1.2em;
 }
 
 p {
-    font-size: 1.2em;
-    line-height: 1.2em;
+    font-size: 1.1em;
+    line-height: 1.1em;
     color: #333;
 }
 footer {
@@ -91,8 +96,7 @@ ul.posts li {
 
 /* Three image containers (use 25% for four, and 50% for two, etc) */
 .activity_pic {
-    float: left;
-    width: 24%;
+    width: 25%;
     padding: 5px;
 }
   
@@ -101,7 +105,13 @@ ul.posts li {
     content: "";
     clear: both;
     display: table;
-} 
+}
+
+@media screen and (max-width: 600px) {
+    .activity_pic {
+        width: 100%;
+    }
+}
 
 .about {
     border-bottom: 1px solid #d5d5d5;
@@ -120,4 +130,52 @@ ul.posts li {
 
 #dl-CV-button:hover {
     background-color: slategray;
+}
+
+#biomusic-screen {
+    width: 250px;
+}
+
+#visual-graph {
+    width: 400px;
+}
+
+#control-img {
+    width: 200px;
+}
+
+#training-screen {
+    width: 200px;
+}
+
+#feature-faces {
+    width: 300px;
+}
+
+#fpga-schematic {
+    width: 300px;
+}
+
+.experience_image,
+.project_image {
+    width: 100%;
+    text-align: center;
+}
+
+.experience,
+.project {
+    border-bottom: 1px solid #d5d5d5;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.experience_section,
+.projects_section {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.experience p,
+.project p {
+    overflow: auto;
 }
