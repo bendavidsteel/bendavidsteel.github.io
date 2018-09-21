@@ -96,7 +96,7 @@ ul.posts li {
 
 /* Three image containers (use 25% for four, and 50% for two, etc) */
 .activity_pic {
-    width: 25%;
+    width: 24%;
     padding: 5px;
 }
   
@@ -145,15 +145,15 @@ ul.posts li {
 }
 
 #training-screen {
-    width: 200px;
+    width: 300px;
 }
 
 #feature-faces {
-    width: 300px;
+    width: 350px;
 }
 
 #fpga-schematic {
-    width: 300px;
+    width: 400px;
 }
 
 .experience_image,

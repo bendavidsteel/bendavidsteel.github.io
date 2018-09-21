@@ -20,10 +20,10 @@ title: Ben Steel About Me
 		<div class="activity_pic" style="float: left">
 			<img src="backpacking.jpg" alt="Me on a snowy backpacking trip" style="width:100%">
 		</div>
-		<div class="activity_pic" style="float: right">
+		<div class="activity_pic" style="float: left">
 			<img src="climbing.jpg" alt="Me climbing a rock" style="width:100%">
 		</div>
-		<div class="activity_pic" style="float: right">
+		<div class="activity_pic" style="float: left">
 			<img src="windsurfing.jpg" alt="Me windsurfing" style="width:100%">
 		</div>
 	</div> 
@@ -125,8 +125,8 @@ title: Ben Steel About Me
 		 The accelerometer data was low pass filtered, but no other preprocessing was done to it other than downsampling.</p>
 		<p>After trying out several network configurations, and fixing some bugs, it worked! 
 		The error would previously drop and then plateau, but we finally got it down to near zero.</p>
-		<p>This was a really exciting introduction into the implementation of machine learning, and I hope I can dive deeper into this fascinating technology at some point.
-		You can read more about the project in our final report for the project <a href="NN_Final_Report.pdf" download="Ben_Steel_NN_Project">here</a> (pdf download).
+		<p>This was a really exciting introduction into the implementation of machine learning, and I hope I can dive deeper into this fascinating technology at some point.</p>
+		<p>You can read more about the project in our final report for the project <a href="NN_Final_Report.pdf" download="Ben_Steel_NN_Project">here</a> (pdf download).
 		</p>
 	</div>
 
@@ -136,18 +136,19 @@ title: Ben Steel About Me
 			<figcaption>Testing the Haar cascade algorithm to find facial features</figcaption>
 		</figure>
 		<h4>Face Detection and Age Classification using OpenCV</h4>
-		<p>During my exchange year in Montreal, I worked in a visual systems lab in the neuroscience department at McGill University.
-		I had always been interested in neuroscience, and wanted to take advantage of McGill University's fame in this area.
+		<p>I took an intro to computer vision course for my first semester at McGill, and was blown away by algorithms used to power such an ever increasingly powerful field.
+		This project was the final group assignment (teams of 4) in this course, where we were given the task of finding faces in a picture, 
+		identifying where their facial features lay, extracting data from these features, and then classify the age of the person from these features using machine learning techniques.
 		</p>
-		<p>The work given to me was related to optimising the time taken to complete a retinotopic mapping of a person's visual cortex, 
-		i.e. Where neurons in the brain related to a particular point in a person's field of vision.
-		I was given a large amount of background reading, given my inexpertise with neuroscience, and found it fascinating learning more about the brain, visual system and visual cortex.
+		<p>My role in the assignment was identifying features once faces had been found (using the AdaBoost algorithm), and extracting salient metrics to be fed into the classifier.
+		I experimented with two methods. The first defined likely search areas for the eyes and mouth (and assumes the face is looking directly into the camera),
+		and uses horizontal projection to find likely midpoints of the features. Then the connected components algorithm was used to find the extent of these features.
+		The other method used Haar cascades to find the features (incremently refines a search for the features using known general characteristics). I ended up using the second, more robust method.
 		</p>
-		<p>The actual day to day of the work consisted mostly of writing <i>MATLAB</i> scripts to cross index the two datasets I was using, and create the data visualisations.
-		I also learned a great deal about using Unix based OS, and the <i>Bash</i> command language, which I used to interface with the extremely large number of files I needed for all the data.
-		In fact, due to the huge size of the datasets I was using (on the order of TBs), I needed to make use of the neuroscience department's <i><a href="https://en.wikipedia.org/wiki/Oracle_Grid_Engine">SGE</a></i> computing cluster system,
-		which time consuming processes could be submitted to.
+		<p>With the features found, I extracted features such as wrinkle depth and variance across the cheeks and forehead, and ratios of facial feature size and proportion.
+		These were then used as the metric vectors for each face for the classifier. We experimented with SVM, Random Forest and Neural Network models to find the best classifier.
 		</p>
+		<p>You can view the code written in this project in <a href="faceDetectionClassification.ipynb" download="Ben_Steel_CV_Project">this</a> jupyter notebook.</p>
 	</div>
 
 	<div class="project" >
@@ -156,15 +157,15 @@ title: Ben Steel About Me
 			<figcaption>A schematic for the architecture of our command receiver</figcaption>
 		</figure>
 		<h4>Peak Detection using an FPGA</h4>
-		<p>I secured my internship at Control Techniques by being granted an <a href="http://e3academy.org/scholarships.php" target="_blank">E3 Academy</a> industrial scholarship.
-		I decided to leave the scholarship at the end of the summer due to realising I didn't want a career in electrical engineering,
-		but nevertheless gained some valuable industry experience in a great company.
+		<p>Taking digital design classes throughout my degree has been a great way to understand computers from the bottom up.
+		In this class we were tasked with designing a serial data peak detector, with a command interface, written in <i>VHDL</i>, to be implemented on an FPGA.
+		VHDL is a hardware description language, so the code executes concurrently rather than sequentially.
+		This was an interesting transition from software languages.
 		</p>
-		<p>My work over the summer was split into two parts. The first part was in the PCB design team, laying out and tracking PCBs using industry level software.
-		This gave me my first real experience of working in an engineering company, and gave me great experience working as part of a professional team.
+		<p> The initial design was very important, dividing the required processes into several Mealy machines.
+		These were then written up in VHDL, and connected according to the schematic.
 		</p>
-		<p>The second part of the summer I worked in the safety team, debugging an ARM microprocessor via JTAG.
-		I spent my time in the team working towards setting up a password lock on the JTAG.
+		<p>Debugging the design to fabricatable was surprisingly difficult, and ensuring there were no latches, only flip-flops, required a lot of thought.
 		</p>
 	</div>
 </div>
