@@ -69,7 +69,6 @@ ul.posts li {
 .banner {
     position: relative;
     text-align: center;
-    color: white;
 	width: 100%;
 }
 
@@ -83,15 +82,23 @@ ul.posts li {
     margin-right: auto;
 }
 
-.text-banner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+@media screen and (min-width: 1000px) {
+    .text-banner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+    }
 }
 
-#name-banner {
-	color: black;
+.text-banner h1 {
+    font-size: 350%;
+    color: black;
+}
+
+.text-banner h4 {
+    font-size: 150%;
 }
 
 /* Three image containers (use 25% for four, and 50% for two, etc) */
@@ -123,7 +130,7 @@ ul.posts li {
     color: white;
     padding: 12px 30px;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 4em;
     font-family: 'Helvetica';
     text-align: center;
 }
