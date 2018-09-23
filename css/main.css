@@ -120,6 +120,16 @@ ul.posts li {
     }
 }
 
+@media screen and (min-width: 600px) {
+    .left-figure {
+        float: left;
+    }
+
+    .right-figure {
+        float: right;
+    }
+}
+
 .about {
     border-bottom: 1px solid #d5d5d5;
 }
