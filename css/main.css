@@ -130,7 +130,9 @@ ul.posts li {
     }
 }
 
-.about {
+.about,
+.awards_section,
+.references {
     border-bottom: 1px solid #d5d5d5;
 }
 
