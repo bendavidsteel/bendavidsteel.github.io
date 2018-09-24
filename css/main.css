@@ -152,27 +152,27 @@ ul.posts li {
 }
 
 #biomusic-screen {
-    width: 250px;
+    width: 12.5em;
 }
 
 #visual-graph {
-    width: 400px;
+    width: 25em;
 }
 
 #control-img {
-    width: 200px;
+    width: 12.5em;
 }
 
 #training-screen {
-    width: 300px;
+    width: 12.5em;
 }
 
 #feature-faces {
-    width: 350px;
+    width: 20em;
 }
 
 #fpga-schematic {
-    width: 400px;
+    width: 15em;
 }
 
 .experience_image,
