@@ -1,8 +1,19 @@
-name: Ben Steel
-markdown: kramdown
-url: 'https://bendavidsteel.github.io/'
-baseurl: ''
-permalink: /blog/:year/:month/:day/:title
+title:              Ben's Blog
+email:              bendavidsteel@gmail.com
+description:        My corner of the internet
+author:             Ben Steel
+baseurl:            "/bendavidsteel.github.io"
+url:                'https://bendavidsteel.github.io/'
 
+
+# Add your google-analytics ID here to activate google analytics
+google_analytics:   UA-125457900-1 # out your google-analytics code
+
+# Build settings
+markdown:           kramdown
+paginate:           5
+paginate_path:      "/posts/page:num/"
 plugins:
-  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-paginate
+  - jekyll-sitemap ## Uncomment this line to silently generate a sitemaps.org compliant sitemap for your Jekyll site

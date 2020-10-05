@@ -1,0 +1,32 @@
+// Import Core Clean Blog SCSS
+@import "../assets/vendor/startbootstrap-clean-blog/scss/clean-blog.scss";
+
+
+/* Three image containers (use 25% for four, and 50% for two, etc) */
+.activity_pic {
+    width: 49%;
+    padding: 2%;
+}
+  
+/* Clear floats after image containers */
+.activity_row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+@media screen and (max-width: 600px) {
+    .activity_pic {
+        width: 100%;
+    }
+}
+
+#face-image {
+	position: relative;
+    text-align: center;
+    color: white;
+	width: 100%;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
