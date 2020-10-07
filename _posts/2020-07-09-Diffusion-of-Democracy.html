@@ -29,18 +29,18 @@ graphs. Social media networks present large quantities of data which is great if
 to process all that data, but make it hard to get comparable results for independent practioners like myself.</p>
 
 <p>The one thing I have to give me a bit of computational power is Google Colaboratory, which provides free GPU instances from 
-Google's compute service. [As much](https://www.polemicdigital.com/google-amp-go-to-hell/) 
-[as I](https://www.theguardian.com/business/2018/jul/18/google-faces-record-multibillion-fine-from-eu-over-android) 
-[hate to use](https://en.wikipedia.org/wiki/Privacy_concerns_regarding_Google) a Google product, I'm really not sure my laptop could 
-take many more overnight training sessions as it did in my MEng. The instances even come with an optional TPU if the library you're 
+Google's compute service. <a href="https://www.polemicdigital.com/google-amp-go-to-hell/" target="_blank">As much</a>
+<a href="https://www.theguardian.com/business/2018/jul/18/google-faces-record-multibillion-fine-from-eu-over-android" target="_blank">as I</a>
+<a href="https://www.wired.com/story/google-privacy-data/" target="_blank">hate to use</a>) a Google product, I'm really not sure my laptop could 
+take many more overnight training sessions as it did when it was young. The instances even come with an optional TPU if the library you're 
 using supports that. The library I'll be using for this project is PyTorch Geometric. This extension provides loads of graph learning 
 methods, built on top of PyTorch.</p>
 
 <p>The first step for this project was finding a good dataset to train the model on. The 
-[VDem dataset](https://www.v-dem.net/en/data/data-version-10/) will provide the measure of democracy over time for each country. 
+<a href="https://www.v-dem.net/en/data/data-version-10/" target="_blank">VDem dataset</a> will provide the measure of democracy over time for each country. 
 We then need a dataset providing data on international relationships. To this end, I found the 
 Centre d'Etudes Prospectives et d'Information Internationales (CEPII) 
-[trade history dataset](http://www.cepii.fr/CEPII/en/bdd_modele/presentation.asp?id=32), which presents an incredible 1.9 million 
+<a href="http://www.cepii.fr/CEPII/en/bdd_modele/presentation.asp?id=32" target="_blank">trade history dataset</a>, which presents an incredible 1.9 million 
 bilateral trade flow observations. The dataset also bilateral features common factors of trade, including geographical distance, 
 common borders, colonial and linguistic links, alongside GDP and population measures, all for the last 200 years.  This provided a 
 very strong basis on which to create a model.</p>
@@ -55,13 +55,17 @@ the citizens of Zimbabwe? </p>
 
 <p>I opted for associating the trade with the population, with the potentially naive rationale that seeing as the population 
 producing and consuming the traded goods would be the most suscetible to its cultural impacts, or as succintly put in an 
-[article](https://www.theglobalist.com/does-trade-promote-democracy/) on the subject by Daniel Griswold: </p>
+<a href="https://www.theglobalist.com/does-trade-promote-democracy/" target="_blank">article</a> on the subject by Daniel Griswold: </p>
 
-> ...governments that grant their citizens a large measure of freedom to engage in international commerce find it dauntingly difficult to simultaneously deprive them of political and civil liberties.
+<blockquote cite="https://www.theglobalist.com/does-trade-promote-democracy/">...governments that grant their citizens a large measure 
+of freedom to engage in international commerce find it dauntingly difficult to simultaneously deprive them of political and civil 
+liberties.</blockquote>
 
 <p>This general rule falls down a bit in some cases like the Tangier International Zone, which was a small area of Tangier, Morocco, 
 jointly ruled by France, Spain and the UK. The population of this area was mostly international, and therefore I didn't include the trade 
 data from this area.</p>
+
+<div class="post-graphic" >{% include trade-dataset-globe.html %}</div>
 
 <p>With a cohesive dataset created, all that was left was to define and train the model. The model takes the GDP and population of the 
 country, and the bilateral relationships with the countries it trades with, as input, and predicts the index of democratization for 
