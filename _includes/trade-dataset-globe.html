@@ -11,12 +11,27 @@
     <div id="globeViz"></div>
 
     <script>
-        fetch('/\_posts/diffusion-of-democracy/countries.geojson').then(res => res.json()).then(countries =>
-        {
+        async function getCountryBorderData() {
+            var countriesRes = await fetch('/data/countryBorders.geojson');
+            return countriesRes.json();
+        }
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        (async () => {
+            countries = await getCountryBorderData();
+
             const Globe = new ThreeGlobe()
-            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
-            .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
+            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-day.jpg')
             .polygonsData(countries.features)
+            .polygonCapColor(() => getRandomColor())
 
             // Setup renderer
             const renderer = new THREE.WebGLRenderer();
@@ -37,7 +52,8 @@
 
             // Add camera controls
             const tbControls = new THREE.TrackballControls(camera, renderer.domElement);
-            tbControls.minDistance = 101;
+            tbControls.minDistance = 350;
+            tbControls.maxDistance = 350;
             tbControls.rotateSpeed = 5;
             tbControls.noZoom = true;
 
@@ -48,6 +64,6 @@
                 renderer.render(scene, camera);
                 requestAnimationFrame(animate);
             })();
-        });
+        })();
     </script>
 </body>
