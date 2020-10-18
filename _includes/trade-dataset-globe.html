@@ -9,10 +9,24 @@
 
 <body>
     <div id="globeViz"></div>
+    <div id="graphic-slider-div">
+        <input type="range" min="0" max="114" value="0" step="1" id="graphic-slider">
+        <p id="slider-text">Year: <span id="slider-num"></span></p>
+    </div>
 
     <script>
-        async function getCountryBorderData() {
-            var countriesRes = await fetch('/data/countryBorders.geojson');
+        var slider = document.getElementById("graphic-slider");
+        var output = document.getElementById("slider-num");
+        output.innerHTML = slider.value;
+        
+        slider.oninput = function() {
+          output.innerHTML = this.value;
+        }
+    </script>
+
+    <script>
+        async function getCapitalLocationData() {
+            var countriesRes = await fetch('/data/capitals.geojson');
             return countriesRes.json();
         }
 
@@ -30,17 +44,35 @@
             return color;
         }
 
-        (async () => {
-            countries = await getCountryBorderData();
+        function heatMap(idx) {
+            const heatMap = [
+                "rgba(0, 255, 255, 0.05)",
+                "rgba(0, 191, 255, 0.05)",
+                "rgba(0, 127, 255, 0.05)",
+                "rgba(0, 63, 255, 0.05)",
+                "rgba(0, 0, 255, 0.1)",
+                "rgba(0, 0, 223, 0.1)",
+                "rgba(0, 0, 191, 0.2)",
+                "rgba(0, 0, 159, 0.2)",
+                "rgba(0, 0, 127, 0.3)",
+                "rgba(63, 0, 91, 0.5)",
+                "rgba(127, 0, 63, 0.7)",
+                "rgba(191, 0, 31, 1)",
+                "rgba(255, 0, 0, 1)"
+            ]
+            return heatMap[idx];
+        }
 
+        (async () => {
             const Globe = new ThreeGlobe()
-            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-day.jpg')
-            .polygonsData(countries.features)
-            .polygonCapColor(() => getRandomColor())
+            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
+            .arcsTransitionDuration(0)
+            .arcAltitudeAutoScale(0.8)
 
             var year = "";
 
             (async () => {
+                capitalLocations = await getCapitalLocationData();
                 tradeData = await getCountryTradeData();
 
                 var idx = 0;
@@ -48,23 +80,29 @@
                 setInterval(() => {
                     year = tradeData[idx].year;
 
-                    var arcsData = tradeData[idx].trade_data.map((trade_link) => ({
-                        startLat: countries.features[trade_link[0]].centroid[1],
-                        startLng: countries.features[trade_link[0]].centroid[0],
-                        endLat: countries.features[trade_link[1]].centroid[1],
-                        endLng: countries.features[trade_link[1]].centroid[0],
-                        color: ['rgba(0,0,255,0.4)', 'rgba(255,0,0,0.4)'][Math.round(Math.random())]
+                    arcsData = tradeData[idx].trade_data.map((trade_link) => ({
+                        startLat: capitalLocations.features[trade_link[0]].geometry.coordinates[1],
+                        startLng: capitalLocations.features[trade_link[0]].geometry.coordinates[0],
+                        endLat: capitalLocations.features[trade_link[1]].geometry.coordinates[1],
+                        endLng: capitalLocations.features[trade_link[1]].geometry.coordinates[0],
+                        color: heatMap(Math.round(trade_link[2])),
+                        dashLen: (trade_link[2] + 1.17) / 320,
+                        dashGap: (trade_link[2] + 1.17) / 80,
+                        animateTime: 160000 / (trade_link[2] + 1.17)
                     }));
 
                     Globe
                     .arcsData(arcsData)
-                    .arcColor('color');
+                    .arcColor('color')
+                    .arcDashLength('dashLen')
+                    .arcDashGap('dashGap')
+                    .arcDashAnimateTime('animateTime')
 
                     idx++;
                     if (idx === tradeData.length) {
                         idx = 0;
                     }
-                }, 2000);
+                }, 10000);
             })();
 
             // Setup renderer
@@ -96,7 +134,9 @@
                 // Frame cycle
                 tbControls.update();
                 renderer.render(scene, camera);
-                requestAnimationFrame(animate);
+                setTimeout( function() {
+                    requestAnimationFrame( animate );
+                }, 1000 / 24 );
             })();
         })();
     </script>

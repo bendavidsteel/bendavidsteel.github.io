@@ -41,3 +41,21 @@
     left: 50%;
     display: inline-block;
 }
+
+#graphic-slider-div {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    text-align: center;
+}
+
+#graphic-slider {
+    position: relative;
+    display: block;
+    margin : auto;
+    -webkit-appearance: slider-horizontal;
+}
+
+#slider-text {
+    color: white;
+}
