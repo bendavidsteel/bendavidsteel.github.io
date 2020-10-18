@@ -16,6 +16,11 @@
             return countriesRes.json();
         }
 
+        async function getCountryTradeData() {
+            var countriesRes = await fetch('/data/countryTrade.json');
+            return countriesRes.json();
+        }
+
         function getRandomColor() {
             var letters = '0123456789ABCDEF';
             var color = '#';
@@ -32,6 +37,35 @@
             .globeImageUrl('//unpkg.com/three-globe/example/img/earth-day.jpg')
             .polygonsData(countries.features)
             .polygonCapColor(() => getRandomColor())
+
+            var year = "";
+
+            (async () => {
+                tradeData = await getCountryTradeData();
+
+                var idx = 0;
+
+                setInterval(() => {
+                    year = tradeData[idx].year;
+
+                    var arcsData = tradeData[idx].trade_data.map((trade_link) => ({
+                        startLat: countries.features[trade_link[0]].centroid[1],
+                        startLng: countries.features[trade_link[0]].centroid[0],
+                        endLat: countries.features[trade_link[1]].centroid[1],
+                        endLng: countries.features[trade_link[1]].centroid[0],
+                        color: ['rgba(0,0,255,0.4)', 'rgba(255,0,0,0.4)'][Math.round(Math.random())]
+                    }));
+
+                    Globe
+                    .arcsData(arcsData)
+                    .arcColor('color');
+
+                    idx++;
+                    if (idx === tradeData.length) {
+                        idx = 0;
+                    }
+                }, 2000);
+            })();
 
             // Setup renderer
             const renderer = new THREE.WebGLRenderer();
