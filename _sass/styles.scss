@@ -60,7 +60,11 @@
     color: white;
 }
 
-
+#legendWrapper {
+    position: absolute;
+    top: 50%;
+    right: 5%;
+}
   
 /* Mouse-over effects */
 .slider:hover {
