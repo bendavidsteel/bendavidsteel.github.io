@@ -20,15 +20,27 @@
     <script>
         var myData = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         
-        let color = d3.scaleOrdinal(["<10", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-79", "≥80"], d3.schemeSpectral[10])
-        let title = "Age (years)"
+        let color = d3.scaleOrdinal(["10^11", "10^10", "10^9", "10^8", "10^7", "10^6", "10^5", "10^4", "10^3"],
+                                    [
+                                        "rgba(255, 120, 0, 1)",
+                                        "rgba(255, 60, 0, 1)",
+                                        "rgba(255, 0, 0, 1)",
+                                        "rgba(255, 0, 127, 1)",
+                                        "rgba(255, 0, 223, 1)",
+                                        "rgba(127, 0, 255, 1)",
+                                        "rgba(0, 0, 255, 1)",
+                                        "rgba(0, 127, 255, 1)",
+                                        "rgba(0, 255, 255, 1)",
+                                    ])
 
-        let width = 44
-        let height = 320
+        let title = "Trade Flow (USD)"
+
+        let width = 40
+        let height = 480
         let marginTop = 0
-        let marginRight = 16
+        let marginRight = 20
         let marginBottom = 0
-        let marginLeft = 18
+        let marginLeft = 10
         
         const svg = d3.select('#legendWrapper')
             .attr("width", width)
@@ -51,20 +63,28 @@
                 .attr("height", Math.max(0, y.bandwidth() - 1))
                 .attr("fill", color);
         
-        svg.append("g")
+        var axis = svg.append("g")
+            .attr("fill", "white")
             .attr("transform", `translate(0,0)`)
             .call(d3.axisLeft(y))
             .call(g => g.append("text")
-                .attr("x", 0)
-                .attr("y", 0)
+                .attr("x", -40)
+                .attr("y", -10)
                 .attr("fill", "currentColor")
                 .attr("text-anchor", "start")
                 .attr("font-weight", "bold")
                 .attr("color", "white")
                 .text(title));
-    </script>
 
-    <script>
+        axis.selectAll("text")
+            .style("fill", "white")
+
+        axis.selectAll("line")
+            .style("stroke", "white")
+
+        axis.selectAll("path")
+            .style("stroke", "white")
+        
         async function getCapitalLocationData() {
             var countriesRes = await fetch('/data/capitals.geojson');
             return countriesRes.json();
@@ -86,19 +106,15 @@
 
         function heatMap(idx, alpha) {
             const heatMap = [
-                "rgba(0, 255, 255, " + 0.05 * alpha + ")",
-                "rgba(0, 191, 255, " + 0.05 * alpha + ")",
-                "rgba(0, 127, 255, " + 0.05 * alpha + ")",
-                "rgba(0, 63, 255, " + 0.05 * alpha + ")",
-                "rgba(0, 0, 255, " + 0.1 * alpha + ")",
-                "rgba(127, 0, 255, " + 0.1 * alpha + ")",
-                "rgba(191, 0, 255, " + 0.2 * alpha + ")",
-                "rgba(255, 0, 223, " + 0.3 * alpha + ")",
-                "rgba(255, 0, 191, " + 0.4 * alpha + ")",
-                "rgba(255, 0, 127, " + 0.6 * alpha + ")",
-                "rgba(255, 0, 0, " + 0.8 * alpha + ")",
-                "rgba(255, 60, 0, " + 1 * alpha + ")",
-                "rgba(255, 120, 0, " + 1 * alpha + ")"
+                "rgba(0, 255, 255, " + 0.05 * Math.pow(alpha, 4) + ")",
+                "rgba(0, 127, 255, " + 0.05 * Math.pow(alpha, 4) + ")",
+                "rgba(0, 0, 255, " + 0.1 * Math.pow(alpha, 3) + ")",
+                "rgba(127, 0, 255, " + 0.1 * Math.pow(alpha, 2.2) + ")",
+                "rgba(255, 0, 223, " + 0.3 * Math.pow(alpha, 1.7) + ")",
+                "rgba(255, 0, 127, " + 0.6 * Math.pow(alpha, 1.2) + ")",
+                "rgba(255, 0, 0, " + 0.8 * Math.pow(alpha, 0.8) + ")",
+                "rgba(255, 60, 0, " + 1 * Math.pow(alpha, 0.1) + ")",
+                "rgba(255, 120, 0, " + 1 * Math.pow(alpha, 0.1) + ")"
             ]
             return heatMap[idx];
         }
@@ -109,10 +125,10 @@
                 startLng: capitalLocations.features[trade_link[0]].geometry.coordinates[0],
                 endLat: capitalLocations.features[trade_link[1]].geometry.coordinates[1],
                 endLng: capitalLocations.features[trade_link[1]].geometry.coordinates[0],
-                color: heatMap(Math.round(Math.log(trade_link[2]) - 3), 1 - (idx / (2 * tradeData.length))),
-                dashLen: (Math.log(trade_link[2])) / 640,
-                dashGap: (Math.log(trade_link[2])) / 160,
-                animateTime: 320000 / (Math.log(trade_link[2]))
+                color: heatMap(Math.round(Math.log10(trade_link[2])), 1 - (idx / (1.5 * tradeData.length))),
+                dashLen: (Math.log10(trade_link[2]) + 1) / 640,
+                dashGap: (Math.log10(trade_link[2]) + 1) / 160,
+                animateTime: 640000 / (Math.log(trade_link[2]))
             }));
 
             globe
@@ -127,7 +143,7 @@
             const Globe = new ThreeGlobe()
             .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
             .arcsTransitionDuration(0)
-            .arcAltitudeAutoScale(0.8)
+            .arcAltitudeAutoScale(1)
 
             var year = "";
 
