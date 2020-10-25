@@ -20,7 +20,7 @@
     <script>
         var myData = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         
-        let color = d3.scaleOrdinal(["10^11", "10^10", "10^9", "10^8", "10^7", "10^6", "10^5", "10^4", "10^3"],
+        let color = d3.scaleOrdinal(["1E+11", "1E+10", "1E+9", "1E+8", "1E+7", "1E+6", "1E+5", "1E+4", "1E+3"],
                                     [
                                         "rgba(255, 120, 0, 1)",
                                         "rgba(255, 60, 0, 1)",
@@ -68,16 +68,18 @@
             .attr("transform", `translate(0,0)`)
             .call(d3.axisLeft(y))
             .call(g => g.append("text")
-                .attr("x", -40)
+                .attr("x", -60)
                 .attr("y", -10)
                 .attr("fill", "currentColor")
                 .attr("text-anchor", "start")
                 .attr("font-weight", "bold")
                 .attr("color", "white")
+                .style("font-size", "18px")
                 .text(title));
 
         axis.selectAll("text")
             .style("fill", "white")
+            .style("font-size", "14px")
 
         axis.selectAll("line")
             .style("stroke", "white")
