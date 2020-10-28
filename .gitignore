@@ -1,2 +1,4 @@
 _site/
 about/media/.ipynb_checkpoints
+*.vscode
+*.jekyll-metadata
