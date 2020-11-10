@@ -6,14 +6,14 @@ date: 2020-09-29 21:45:13 -0000
 background: '/media/globe_pic.jpg'
 ---
 
-<p>Democracy is a beautiful thing, hard won by a long history of violence. Its origins are well known, with liberal democracy considered to 
+<p>How does democracy diffuse? Its origins are well known, with liberal democracy considered to 
 date back to Athens and the Roman Republic, and its rich history is marked by the many revolutions leading up to the present day. But due 
-to its nebulous, sociological nature, the means by which it occurs are not well understood. Some casuality can be inferred from looking at 
-individual cultural groups, but a unified theory of how deomcracy diffuses between people and nations seems far off, if not impossible. 
+to its nebulous, sociological nature, the means by which it occurs don't seem to be well understood. Some casuality can be inferred from looking at 
+individual cultural groups, but a unified theory of how deomcracy diffuses between people and nations seems far off. 
 Nonetheless, I'd like to dive into possible factors of democracy, and here will attempt to produce a simple blackbox model of how 
 geo-political systems affect its spread and growth.</p>
 
-<p>someone with no academic background in political science this probably seems a bit ambitious, but there is some precedent here: 
+<p>For someone with no academic background in political science this probably seems a bit ambitious, but there is some precedent here: 
 the <a href="https://www.v-dem.net/en/our-work/research-projects/explaining-democratization/" target="_blank">Varieties of Democracy (VDem) project</a> is focused on 
 understanding democracy, and has published an incredibly comprehensive dataset that acts as an index of democracy for the vast majority of 
 nations over the last two centuries. They have previously published studies using their dataset showing a colonial relationship between two 
@@ -65,7 +65,7 @@ liberties.</blockquote>
 jointly ruled by France, Spain and the UK. The population of this area was mostly international, and therefore I didn't include the trade 
 data from this area.</p>
 
-<div class="graphic" >{% include trade-dataset-globe.html %}</div>
+<div class="graphic">{% include trade-dataset-globe.html %}</div>
 
 <p>With a cohesive dataset created, all that was left was to define and train the model. The model takes the GDP and population of the 
 country, and the bilateral relationships with the countries it trades with, as input, and predicts the index of democratization for 
@@ -73,4 +73,4 @@ that year. I initially defined a simple non-recurrent model that predicts only u
 be pants, so I quickly switched to a recurrent model. The results were... pretty good! I ran the model on the data of three particularly 
 historically interesting countries, and here are the results:</p>
 
-[INSERT PREDICTION CHART]
+<div class="graphic">{% include demo-pred.html %}</div>
