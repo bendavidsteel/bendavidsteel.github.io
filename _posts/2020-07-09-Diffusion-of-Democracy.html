@@ -65,7 +65,11 @@ liberties.</blockquote>
 jointly ruled by France, Spain and the UK. The population of this area was mostly international, and therefore I didn't include the trade 
 data from this area.</p>
 
+<p>To understand the data a little better, I've created two visualisations, one for trade, and one for colonization status:</p>
+
 <div class="graphic">{% include trade-dataset-globe.html %}</div>
+
+<div class="graphic" height="1000px">{% include colonization-visual.html %}</div>
 
 <p>With a cohesive dataset created, all that was left was to define and train the model. The model takes the GDP and population of the 
 country, and the bilateral relationships with the countries it trades with, as input, and predicts the index of democratization for 
