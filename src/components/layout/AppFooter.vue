@@ -1,0 +1,22 @@
+<template>
+  <header class="header">
+    <a href="https://github.com/bendavidsteel/">Github</a>
+    <a href="https://www.linkedin.com/in/ben-steel-9270b5126/">Linkedin</a>
+  </header>
+</template>
+<style scoped>
+.header {
+  padding: 15px 15px;
+  background: #f7f7f7;
+  position: fixed;
+  background: rgba(0,0,0,.2);
+  width: 100%;
+  bottom: 0;
+}
+a {
+  font-size: 26px;
+  color: darkslategray;
+  text-decoration: none;
+  padding: 100px;
+}
+</style>
