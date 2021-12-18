@@ -5,8 +5,22 @@
                 Ben Steel
             </h1>
         </div>
+        <div v-for="post in posts" v-bind:key="post.id">
+            {{ post.text }}
+        </div>
     </section>
 </template>
+<script>
+export default {
+    posts: [
+        {
+            id: "demo-diff",
+            text: 'Democracy Diffusion'
+        }
+    ]
+}
+</script>
+
 <style scoped>
 .content {
   display: table-row;
