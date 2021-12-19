@@ -11,6 +11,7 @@
               Excited to be contributing to the computational social science space, specifically data science for political science. <br>
               I fill my time outside research with climbing, backpacking, skiing, and other hobbies. <br>
               I'm trying to find the balance between creating positive contributions to society and enjoying my life. <br>
+              Site designed by me, pictures by me, using the Vue framework.
             </p>
           </div>
         </div>
