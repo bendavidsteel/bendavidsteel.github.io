@@ -1,29 +1,36 @@
 <template>
-  <header class="header">
-    <a href="https://github.com/bendavidsteel/">
-      <img src="@/assets/github.png" alt="Github link" style="height:42px;">
-    </a>
-    <a href="https://www.linkedin.com/in/ben-steel-9270b5126/">
-      <img src="@/assets/linkedin.png" alt="Linkedin link" style="height:42px;">
-    </a>
-    <a href="https://www.linkedin.com/in/ben-steel-9270b5126/">
-      <img src="@/assets/twitter.png" alt="Twitter link" style="height:42px;">
-    </a>
-  </header>
+  <footer class="footer" :style="{'background-image': 'url(' + require('@/assets/footerpic.jpg') + ')'}">
+    <div class="tabs">
+      <a href="https://github.com/bendavidsteel/">github</a>
+      <a href="https://twitter.com/bendavidsteel">twitter</a>
+      <a href="https://www.linkedin.com/in/ben-steel-9270b5126/">linkedin</a>
+    </div>
+  </footer>
 </template>
 <style scoped>
-.header {
-  padding: 15px 15px;
-  background: #f7f7f7;
+.footer {
   position: fixed;
-  background: rgba(0,0,0,.2);
-  width: 100%;
   bottom: 0;
+  background-color: blueviolet;
+  background-position: bottom -60px left 0px;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  height: 100px;
+  width: 100%;
+}
+
+.tabs {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }
 a {
-  font-size: 26px;
-  color: darkslategray;
+  font-size: 44px;
+  font-family: Arial, Helvetica, sans-serif;
   text-decoration: none;
-  padding: 100px;
+  color: lightpink;
+  text-shadow: 1px 1px 2px lightcoral, 0 0 1em slateblue, 0 0 0.2em slateblue;
+  padding-right: 80px;
 }
 </style>
