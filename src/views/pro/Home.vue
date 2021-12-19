@@ -12,7 +12,7 @@
                         PhD student with <a class="link" href="https://derekruths.com/">Derek Ruths</a> in the <a class="link" href="http://networkdynamics.org/">Network Dynamics Lab</a> at McGill<br>
                         former data developer <a class="link" href="https://www.ubisoft.com/en-gb/">Ubisoft</a><br>
                         data science for social science<br>
-                        climber/skier/backpacker
+                        climber | skier | backpacker
                     </h4>
                 </div>
             </div>
