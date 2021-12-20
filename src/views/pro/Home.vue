@@ -64,14 +64,14 @@ export default {
 }
 
 #name {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 64px;
+    font-family: Georgia, Verdana, sans-serif;
+    font-size: 54px;
     color: lightgoldenrodyellow;
     text-shadow: -1px -1px 0 lightcoral, 1px -1px 0 lightcoral, -1px 1px 0 lightskyblue, 1px 1px 0 lightskyblue;
 }
 
 #descrip {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Georgia, Verdana, sans-serif;
     font-size: 26px;
     text-shadow: -0.5px -0.5px 0 lightcoral, 0.5px -0.5px 0 lightcoral, -0.5px 0.5px 0 lightskyblue, 0.5px 0.5px 0 lightskyblue;
     color:darkmagenta;

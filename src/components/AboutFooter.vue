@@ -1,9 +1,9 @@
 <template>
   <footer class="footer" :style="{'background-image': 'url(' + require('@/assets/footerpic.jpg') + ')'}">
     <div class="tabs">
-      <a href="https://github.com/bendavidsteel/">github</a>
-      <a href="https://twitter.com/bendavidsteel">twitter</a>
-      <a href="https://www.linkedin.com/in/ben-steel-9270b5126/">linkedin</a>
+      <a href="https://github.com/bendavidsteel/" target="_blank">github</a>
+      <a href="https://twitter.com/bendavidsteel" target="_blank">twitter</a>
+      <a href="https://www.linkedin.com/in/ben-steel-9270b5126/" target="_blank">linkedin</a>
     </div>
   </footer>
 </template>
@@ -26,7 +26,7 @@
   justify-content: flex-end;
 }
 a {
-  font-size: 44px;
+  font-size: 40px;
   font-family: Arial, Helvetica, sans-serif;
   text-decoration: none;
   color: lightpink;

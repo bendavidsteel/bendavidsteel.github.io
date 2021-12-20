@@ -24,7 +24,7 @@
 
 a {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 44px;
+  font-size: 40px;
   text-decoration: none;
   color: lightgoldenrodyellow;
   text-shadow: 0.5px 0.5px 1px lightcoral, 0 0 1px lightsteelblue, 0 0 1px lightsteelblue;
