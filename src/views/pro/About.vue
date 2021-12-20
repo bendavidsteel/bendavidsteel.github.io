@@ -6,7 +6,7 @@
           <div id='about-text'>
             <h2 id='about-title'>Hello fellow web wanderer!</h2>
             <p>
-              I love doing fun things, being among goog people, and making the most of life. <br>
+              I love doing fun things, being among good people, and making the most of life. <br>
               From the UK, living in Montreal. Formerly worked as a data developer at Ubisoft and Maya HTT, now back in academia. <br>
               Excited to be contributing to the computational social science space, specifically data science for political science. <br>
               I fill my time outside research with climbing, backpacking, skiing, and other hobbies. <br>
