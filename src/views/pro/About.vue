@@ -7,9 +7,8 @@
             <h2 id='about-title'>Hello fellow web wanderer!</h2>
             <p id='main-about'>
               <!--TODO improve formatting-->
-              I love doing fun things, being among good people, and making the most of life. <br>
               From the UK, living in Montreal. Formerly worked as a data developer at Ubisoft and Maya HTT, now back in academia, where I'm excited to be contributing to the computational social science space, specifically data science for political science. <br>
-              I fill my time outside research with climbing, backpacking, skiing, and other hobbies, and more importantly, spending quality time with friends. <br>
+              I fill my time outside research with climbing, backpacking, skiing, and other hobbies. <br>
               I'm trying to find the balance between creating positive contributions to society and enjoying my life.
               <br>
               <br>
