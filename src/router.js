@@ -29,6 +29,13 @@ export default createRouter({
       path: "/aethylus",
       component: () => import("@/views/per/Home")
     },
-    
+    {
+      path: "/forellie",
+      component: () => import("@/views/misc/Ellie")
+    },
+    {
+      path: "/northumbrianbells",
+      component: () => import("@/views/misc/NorthBells")
+    }
   ]
 });
