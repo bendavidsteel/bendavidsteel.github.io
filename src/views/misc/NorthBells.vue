@@ -1,7 +1,7 @@
 <template>
     <section class="content">
         <div class="flex-box-page">
-            <img :src="require('@/assets/northbells.jpg')" alt="Picture of the Northumbrian Bells performing" style="width:50%;height:90%;">
+            <img :src="require('@/assets/northbells.jpg')" alt="Picture of the Northumbrian Bells performing" id="northbells">
             <div class="flex-box-col">
                 <div class="text-box">
                     <h1 id='name'>
@@ -13,11 +13,13 @@
                         Available to play at weddings and events
                     </h4>
                 </div>
-                <img :src="require('@/assets/heather.jpg')" alt="Picture of the some bell heather" style="width:100%;height:40%;">
+                <div id="heather-div">
+                    <img :src="require('@/assets/heather.jpg')" alt="Picture of the some bell heather" id="heather">
+                </div>
             </div>
         </div>
     </section>
-    <footer class="footer">
+    <div class="footer">
         <div class="footer-gap"></div>
         <div class="main-footer">
             <div class="tabs">
@@ -28,30 +30,54 @@
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
 </template>
 <style scoped>
 
 .content {
-    height: 100vh;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden !important;
     padding: 0px;
-    background-color: lightpink;
+    margin: 0px 0px 0px 0px;
+    background-color: rgb(240, 198, 204);
 }
 
 .flex-box-page {
     height: 100%;
     width: 100%;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-flow: row wrap;
 }
 
 .flex-box-col {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    max-height: 90%;
+    min-width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 90%;
-    width: 50%;
+}
+
+ #northbells {
+    display: block;
+    height: auto;
+    min-width: 50%;
+    max-height: 90%;
+ }
+
+#heather-div {
+    width: 100%;
+    height: 300px;
+    margin-bottom: 0px;
+}
+
+#heather {
+    height: 100%;
+    width: 100%;
+    margin-bottom: 0px;
 }
 
 .link {
@@ -59,8 +85,10 @@
 }
 
 .text-box {
+    width: 100%;
     padding-top: 80px;
-    padding-left: 40px;
+    padding-left: 20px;
+    padding-right: 0px;
 }
 
 .footer {
@@ -72,17 +100,17 @@
 
 .footer-gap {
     background-color: silver;
-    height: 10%;
+    height: 20%;
 }
 
 .main-footer {
     background-color: skyblue;
-    height: 90%;
+    height: 80%;
 }
 
 #name {
     font-family: Garamond, "Times New Roman", serif;
-    font-size: 90px;
+    font-size: 5.5em;
     color: darkorchid;
     text-shadow: -2px -2px 0 silver, 2px -2px 0 silver, -2px 2px 0 silver, 2px 2px 0 silver;
 }
@@ -94,7 +122,7 @@
 }
 
 .tabs {
-  padding-top: 10px;
+  padding-top: 5px;
   padding-bottom: 20px;
   display: flex;
   flex-direction: row;
@@ -112,7 +140,7 @@
 
 .link {
   font-size: 40px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Times New Roman", serif;
   text-decoration: none;
   color: darkslategray;
 }
