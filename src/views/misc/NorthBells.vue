@@ -40,7 +40,7 @@
     overflow-x: hidden !important;
     padding: 0px;
     margin: 0px 0px 0px 0px;
-    background-color: rgb(240, 198, 204);
+    background-color: rgb(253, 194, 255);
 }
 
 .flex-box-page {
@@ -104,7 +104,7 @@
 }
 
 .main-footer {
-    background-color: skyblue;
+    background-color: lightsteelblue;
     height: 80%;
 }
 
@@ -116,7 +116,7 @@
 }
 
 #descrip {
-    font-family: Georgia, Verdana, sans-serif;
+    font-family: "Times New Roman", serif;
     font-size: 20px;
     color:darkslategray;
 }
