@@ -1,7 +1,7 @@
 <template>
     <section class="content">
         <div class="flex-box-page">
-            <img :src="require('@/assets/northbells.jpg')" alt="Picture of the Northumbrian Bells performing" id="northbells">
+            <img :src="require('@/assets//northbells/northbells.jpg')" alt="Picture of the Northumbrian Bells performing" id="northbells">
             <div class="flex-box-col">
                 <div class="text-box">
                     <h1 id='name'>
@@ -14,7 +14,7 @@
                     </h4>
                 </div>
                 <div id="heather-div">
-                    <img :src="require('@/assets/heather.jpg')" alt="Picture of the some bell heather" id="heather">
+                    <img :src="require('@/assets/northbells/heather.jpg')" alt="Picture of the some bell heather" id="heather">
                 </div>
             </div>
         </div>
