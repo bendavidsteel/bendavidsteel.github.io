@@ -17,46 +17,67 @@
                 </div>
             </div>
         </div>
-        <div v-for="post in posts" v-bind:key="post.id">
-            {{ post.text }}
+        <div class="article-list">
+            <div v-for="post in posts" v-bind:key="post.id">
+                {{ post.text }}
+            </div>
         </div>
     </section>
 </template>
 <script>
 export default {
-    posts: [
-        {
-            id: "demo-diff",
-            text: 'Democracy Diffusion'
+    data() {
+        return {
+            posts: [
+                {
+                    id: "demo-diff",
+                    text: 'Democracy Diffusion'
+                }
+            ]
         }
-    ]
+    }
 }
 </script>
 
 <style scoped>
 
 .content {
-    height: 100%;
+    min-height: 100%;
     margin: 0px;
     margin-top: 100px;
     padding: 0px;
     background-color: lightgoldenrodyellow;
 }
 
+.article-list {
+    margin-top: 0;
+}
+
 .content-body {
   background-repeat: no-repeat;
-  background-size: 100% auto;
+  background-size: contain;
+  background-color: cornflowerblue;
   height: 100%;
   width: 100%;
+  padding-top: 35.017%;
 }
 
 .flex {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    flex-wrap: wrap;
     margin-right: 2%;
     margin-left: 2%;
     padding-top: 60px;
+    margin-top: -35.017%
+}
+
+@media only screen and (max-width: 600px) {
+  .flex {
+    margin-top: 0;
+    padding-top: 0px;
+  }
 }
 
 .link {
