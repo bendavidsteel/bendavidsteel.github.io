@@ -18,22 +18,27 @@
             </div>
         </div>
         <div class="article-list">
-            <div v-for="post in posts" v-bind:key="post.id">
-                {{ post.text }}
+            <div v-for="post in posts" v-bind:key="post.id" class="post_card">
+                <article-card :title="post.title" :subtitle="post.subtitle" :date="post.date" :image_path="post.image_path">
+                </article-card>
             </div>
         </div>
     </section>
 </template>
 <script>
+import ArticleCard from '@/components/ArticleCard'
+
 export default {
+    components: {
+        ArticleCard
+    },
     data() {
+        const req = require.context('@/components/articles/', true, /\.(js|vue)$/i);
+        const article_data = req.keys().map(key => {
+                return req(key).default.data()
+            });
         return {
-            posts: [
-                {
-                    id: "demo-diff",
-                    text: 'Democracy Diffusion'
-                }
-            ]
+            posts: article_data
         }
     }
 }
@@ -42,22 +47,24 @@ export default {
 <style scoped>
 
 .content {
-    min-height: 100%;
-    margin: 0px;
+    height: 100%;
+    margin-bottom: 0px;
     margin-top: 100px;
     padding: 0px;
     background-color: lightgoldenrodyellow;
 }
 
 .article-list {
-    margin-top: 0;
+    margin-right: 20%;
+    margin-left: 20%;
+    max-height: 100%;
+    background-color: cornflowerblue;
 }
 
 .content-body {
   background-repeat: no-repeat;
   background-size: contain;
   background-color: cornflowerblue;
-  height: 100%;
   width: 100%;
   padding-top: 35.017%;
 }

@@ -3,6 +3,7 @@
     <div class="tabs">
       <a href="/">home</a>
       <a href="about">about</a>
+      <a href="visuals">visuals</a>
     </div>
   </header>
 </template>

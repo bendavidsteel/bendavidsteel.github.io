@@ -22,6 +22,10 @@ export default createRouter({
         {
           path: "about",
           component: () => import("@/views/pro/About")
+        },
+        {
+          path: "visuals",
+          component: () => import('@/views/pro/Visuals')
         }
       ]
     },
