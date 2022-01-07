@@ -5,38 +5,38 @@ export default createRouter({
   routes: [
     {
       path: "/",
-      component: () => import("@/views/pro/Pro"),
+      component: () => import("@/views/pro/Pro.vue"),
       children: [
         {
           path: "",
-          component: () => import("@/views/pro/Home"),
+          component: () => import("@/views/pro/Home.vue"),
         },
         {
           path: "articles/:slug",
-          component: () => import("@/views/pro/Article"),
+          component: () => import("@/views/pro/Article.vue"),
           props: true
         },
         {
           path: "about",
-          component: () => import("@/views/pro/About")
+          component: () => import("@/views/pro/About.vue")
         },
         {
           path: "visuals",
-          component: () => import('@/views/pro/Visuals')
+          component: () => import('@/views/pro/Visuals.vue')
         }
       ]
     },
     {
       path: "/aethylus",
-      component: () => import("@/views/per/Home")
+      component: () => import("@/views/per/Home.vue")
     },
     {
       path: "/forellie",
-      component: () => import("@/views/misc/Ellie")
+      component: () => import("@/views/misc/Ellie.vue")
     },
     {
       path: "/northumbrianbells",
-      component: () => import("@/views/misc/NorthBells")
+      component: () => import("@/views/misc/NorthBells.vue")
     }
   ]
 });
