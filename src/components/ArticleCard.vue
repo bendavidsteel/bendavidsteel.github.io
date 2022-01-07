@@ -13,7 +13,7 @@
         </div>
     </div>
 </template>
-<script>
+<script lang="ts">
 export default {
     props: {
         title: String,
@@ -23,8 +23,8 @@ export default {
         slug: String
     },
     methods: {
-        formatDate(date) {
-            return new Intl.DateTimeFormat('default', {dateStyle: 'short'}).format(date);
+        formatDate(date: Date) {
+            return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
         }
     }
 }
