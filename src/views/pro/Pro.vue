@@ -1,6 +1,8 @@
 <template>
   <AppHeader/>
-  <router-view></router-view>
+  <div class="content">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
@@ -13,3 +15,12 @@ export default {
   }
 }
 </script>
+<style scoped>
+
+.content {
+    height: 100%;
+    margin-bottom: 0px;
+    margin-top: 100px;
+    padding: 0px;
+}
+</style>

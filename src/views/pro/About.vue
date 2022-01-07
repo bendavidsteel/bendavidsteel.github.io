@@ -39,7 +39,6 @@ export default {
 .content {
     height: 100%;
     margin: 0px;
-    margin-top: 100px;
     padding: 0px;
     background-color: lightsteelblue;
 }

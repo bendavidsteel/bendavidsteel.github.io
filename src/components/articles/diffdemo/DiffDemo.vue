@@ -80,7 +80,8 @@ export default {
             title: "Diffusion of Democracy",
             subtitle: "How does democracy diffuse",
             date: new Date('2020-09-29T21:45:13'),
-            image_path: '@/assets/globe_pic.jpg'
+            image_path: '@/assets/globe_pic.jpg',
+            slug: 'DiffDemo'
         }
     }
 }

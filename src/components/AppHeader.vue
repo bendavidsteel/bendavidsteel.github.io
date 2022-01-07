@@ -31,4 +31,8 @@ a {
   text-shadow: 0.5px 0.5px 1px lightcoral, 0 0 1px lightsteelblue, 0 0 1px lightsteelblue;
   padding-left: 80px;
 }
+
+a:hover {
+  text-shadow: 2px 2px 4px lightsteelblue, 1px 1px 4px lightcoral, 1px 1px 4px lightcoral;
+}
 </style>

@@ -10,14 +10,11 @@ export default createRouter({
         {
           path: "",
           component: () => import("@/views/pro/Home"),
-          children: [
-            {
-              name: "article",
-              path: "articles/:slug",
-              component: () => import("@/views/pro/Article"),
-              props: true
-            }
-          ]
+        },
+        {
+          path: "articles/:slug",
+          component: () => import("@/views/pro/Article"),
+          props: true
         },
         {
           path: "about",
