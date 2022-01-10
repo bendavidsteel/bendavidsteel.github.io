@@ -37,7 +37,6 @@ export default {
 }
 
 #title-link {
-    text-decoration: none;
 }
 
 #title-text {

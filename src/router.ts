@@ -23,6 +23,11 @@ export default createRouter({
         {
           path: "visuals",
           component: () => import('@/views/pro/Visuals.vue')
+        },
+        {
+          path: "visuals/:slug",
+          component: () => import("@/views/pro/Visual.vue"),
+          props: true
         }
       ]
     },

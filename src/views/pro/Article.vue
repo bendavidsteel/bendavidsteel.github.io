@@ -3,7 +3,7 @@
 </template>
 
 <script>
-  import * as components from '@/components//articles/index'
+  import * as components from '@/components/articles/index'
 
   export default {
 
