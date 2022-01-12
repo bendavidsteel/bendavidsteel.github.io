@@ -4,7 +4,7 @@ export default createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: "/",
+      path: "",
       component: () => import("@/views/pro/Pro.vue"),
       children: [
         {
@@ -12,20 +12,20 @@ export default createRouter({
           component: () => import("@/views/pro/Home.vue"),
         },
         {
-          path: "articles/:slug",
+          path: "/articles/:slug",
           component: () => import("@/views/pro/Article.vue"),
           props: true
         },
         {
-          path: "about",
+          path: "/about",
           component: () => import("@/views/pro/About.vue")
         },
         {
-          path: "visuals",
+          path: "/visuals",
           component: () => import('@/views/pro/Visuals.vue')
         },
         {
-          path: "visuals/:slug",
+          path: "/visuals/:slug",
           component: () => import("@/views/pro/Visual.vue"),
           props: true
         }
