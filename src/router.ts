@@ -25,7 +25,7 @@ export default createRouter({
           component: () => import('@/views/pro/Visuals.vue')
         },
         {
-          path: "/visuals/:slug",
+          path: "/visual/:slug",
           component: () => import("@/views/pro/Visual.vue"),
           props: true
         }

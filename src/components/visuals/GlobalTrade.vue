@@ -17,8 +17,15 @@ import * as d3 from 'd3'
 
 export default {
     data() {
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    
+        
+        
+        return {
+            title: 'GlobalTrade',
+            slug: 'GlobalTrade',
+            image_path: '@/assets/visuals/school.png'
+        }
+    },
+    mounted() {
         let color = d3.scaleOrdinal(["1E+11", "1E+10", "1E+9", "1E+8", "1E+7", "1E+6", "1E+5", "1E+4", "1E+3"],
                                     [
                                         "rgba(255, 120, 0, 1)",
@@ -44,46 +51,28 @@ export default {
         let y = d3.scaleBand()
             .domain(color.domain())
             .rangeRound([marginTop, height - marginBottom]);
-        
-        return {
-            months: months,
-            scaleTitle: scaleTitle,
-            color: color,
-            width: width,
-            height: height,
-            marginTop: marginTop,
-            marginRight: marginRight,
-            marginBottom: marginBottom,
-            marginLeft: marginLeft,
-            y: y,
-            title: 'GlobalTrade',
-            slug: 'GlobalTrade',
-            image_path: '@/assets/visuals/school.png'
-        }
-    },
-    mounted() {
 
         const svg = d3.select('#legendWrapper')
-            .attr("width", this.width)
-            .attr("height", this.height)
-            .attr("viewBox", [0, 0, this.width, this.height])
+            .attr("width", width)
+            .attr("height", height)
+            .attr("viewBox", [0, 0, width, height])
             .style("overflow", "visible")
             .style("display", "block");
 
         svg.append("g")
             .selectAll("rect")
-            .data(this.color.domain())
+            .data(color.domain())
             .join("rect")
-                .attr("x", this.marginRight)
-                .attr("y", this.y)
-                .attr("width", this.width - this.marginLeft - this.marginRight)
-                .attr("height", Math.max(0, this.y.bandwidth() - 1))
-                .attr("fill", this.color);
+                .attr("x", marginRight)
+                .attr("y", y)
+                .attr("width", width - marginLeft - marginRight)
+                .attr("height", Math.max(0, y.bandwidth() - 1))
+                .attr("fill", color);
         
         var axis = svg.append("g")
             .attr("fill", "white")
             .attr("transform", `translate(0,0)`)
-            .call(d3.axisLeft(this.y))
+            .call(d3.axisLeft(y))
             .call(g => g.append("text")
                 .attr("x", -60)
                 .attr("y", -10)
@@ -92,7 +81,7 @@ export default {
                 .attr("font-weight", "bold")
                 .attr("color", "white")
                 .style("font-size", "18px")
-                .text(this.scaleTitle));
+                .text(scaleTitle));
 
         axis.selectAll("text")
             .style("fill", "white")
@@ -216,7 +205,9 @@ function setTradeData(idx, tradeData, capitalLocations, globe) {
 
 <style scoped>
 .content { 
-    margin: 0; 
+    margin: 0;
+    height: 100%;
+    width: 100%;
 }
 
 #globeViz {

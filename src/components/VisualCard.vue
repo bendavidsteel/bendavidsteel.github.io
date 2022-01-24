@@ -1,6 +1,6 @@
 <template>
     <div>
-        <a :href="slug">
+        <a :href="'visual/' + slug">
             <img :src="image_path" alt="Visual image">
             <h1>{{ title }}</h1>
         </a>

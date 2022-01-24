@@ -2,8 +2,8 @@
   <header class="header" :style="{'background-image': 'url(' + require('@/assets/headerpic.jpg') + ')'}">
     <div class="tabs">
       <a href="/">home</a>
-      <a href="about">about</a>
-      <a href="visuals">visuals</a>
+      <a href="/about">about</a>
+      <a href="/visuals">visuals</a>
     </div>
   </header>
 </template>
