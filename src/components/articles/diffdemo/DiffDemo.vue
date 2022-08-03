@@ -71,6 +71,11 @@
         that year. I initially defined a simple non-recurrent model that predicts only using one years worth of data, but this turned out to 
         be pants, so I quickly switched to a recurrent model. The results were... pretty good! I ran the model on the data of three particularly 
         historically interesting countries, and here are the results:</p>
+
+        <p>I kind of fell of the band wagon with this project, but I'm quite proud of this work, so I'm going to finish it in this rather underwhelming way
+        and leave it up here. To wrap it up with a big picture note, whether or not the processes by which societies democratize and become autocratic are 
+        ever fully understood is unclear. But if we keep on trying, using the modern techniques of the day, we may yet surprise ourselves.
+        </p>
     </section>
 </template>
 <script>
