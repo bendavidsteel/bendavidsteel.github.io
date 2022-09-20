@@ -22,5 +22,13 @@ npm run build
 npm run lint
 ```
 
+### Pushing new build
+```
+npm run build
+git add dist
+git commit -m "Adding new build"
+git subtree push --prefix dist origin gh-pages
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
