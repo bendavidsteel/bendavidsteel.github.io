@@ -24,8 +24,14 @@
         <div class="main-footer">
             <div class="tabs">
                 <div class="tab" >
-                    <a class="link" href="https://encoremusicians.com/Northumbrian-Bells" target="_blank">
+                    <a class="link" href="https://encoremusicians.com/Claire-Steel" target="_blank">
                         <b>Encore</b>
+                    </a>
+                </div>
+                <div class="tab" >
+                    <!--Encore Button Generated 19th September 2022 at 11:45am; Copyright Encore 2022-->
+                    <a href='https://encoremusicians.com/hire/flute-and-harp-duos?utm_source=badge&utm_medium=web&utm_campaign=verified_badge&utm_content=green-medium' target="_parent">
+                        <img src='https://encoremusicians.com/img/embeds/badge-green.svg' alt='Book Northumbrian Bells on Encore Musicians' style='width: 100px; height: 100px;'/>
                     </a>
                 </div>
             </div>
@@ -92,7 +98,7 @@
 }
 
 .footer {
-    height: 10%;
+    height: 16%;
     width: 100%;
     position: fixed;
     bottom: 0;
@@ -100,12 +106,12 @@
 
 .footer-gap {
     background-color: silver;
-    height: 20%;
+    height: 10%;
 }
 
 .main-footer {
     background-color: lightsteelblue;
-    height: 80%;
+    height: 90%;
 }
 
 #name {
