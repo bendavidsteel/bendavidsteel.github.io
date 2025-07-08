@@ -36,8 +36,7 @@ export default {
     height: 100%;
     width: 100%;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 20px;
 }
 </style>

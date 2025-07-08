@@ -42,6 +42,11 @@ export default createRouter({
     {
       path: "/northumbrianbells",
       component: () => import("@/views/misc/NorthBells.vue")
+    },
+    {
+      path: "/fullscreen/visual/:slug",
+      component: () => import("@/views/pro/Visual.vue"),
+      props: true
     }
   ]
 });
