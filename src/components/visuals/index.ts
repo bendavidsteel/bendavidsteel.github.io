@@ -1,4 +1,5 @@
 export { default as School } from './School.vue'
 export { default as GlobalTrade } from './GlobalTrade.vue'
-export { default as TikTokMap } from './TikTokMap.vue'
 export { default as TwentyFourHourToponymy } from './TwentyFourHourToponymy.vue'
+export { default as OneHourToponymy } from './OneHourToponymy.vue'
+export { default as ParticleLenia } from './ParticleLenia.vue'
