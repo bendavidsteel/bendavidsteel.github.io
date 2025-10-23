@@ -18,7 +18,7 @@ export default {
 <style scoped>
 
 .content {
-    height: 100%;
+    min-height: 100vh;
     margin-bottom: 0px;
     margin-top: 100px;
     padding: 0px;

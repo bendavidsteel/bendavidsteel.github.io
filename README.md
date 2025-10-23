@@ -22,13 +22,10 @@ npm run build
 npm run lint
 ```
 
-### Pushing new build
-```
-npm run build
-git add dist
-git commit -m "Adding new build"
-git subtree push --prefix dist origin gh-pages
-```
+### Deployment
+The site automatically deploys to GitHub Pages when you push to the `master` branch. The GitHub Actions workflow builds the project and publishes the `dist` folder to the `gh-pages` branch.
+
+No manual deployment steps are needed.
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
