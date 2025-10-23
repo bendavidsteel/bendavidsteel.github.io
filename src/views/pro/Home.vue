@@ -122,7 +122,7 @@ export default {
                 {
                     title: "Extended Particle Lenia Explorer",
                     description: "Interactive web app to explore instantiations of extended particle lenia",
-                    url: "",
+                    url: "https://bendavidsteel.github.io/particle_lenia_datamap.html",
                     code_url: "https://github.com/bendavidsteel/mysarum/tree/main/python/particlelife"
                 },
                 {
@@ -133,7 +133,7 @@ export default {
                 },
                 {
                     title: "A City with No Cars",
-                    description: "Semi-satirical year round pedestrianization of Mont-Royal call for arms based on Connor O'Malley's Endorphin Port",
+                    description: "Semi-satirical year round pedestrianization of Mont-Royal call for arms based on Connor O'Malley's Endorphin Port, winner of best film and best special effects at Friends Film Fest 2023",
                     url: "https://www.youtube.com/watch?v=YZS0BvAAn1U"
                 },
                 {
