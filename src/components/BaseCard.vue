@@ -41,9 +41,9 @@ export default {
 .card-image {
     width: 33.333%;
     max-width: 33.333%;
-    height: 100%;
+    min-height: 100%;
     object-fit: cover;
-    object-position: center center;
+    object-position: center;
     flex-shrink: 0;
 }
 </style>
