@@ -11,7 +11,7 @@ export default {
         return {
             title: '1-Hour Toponymy Data Map',
             slug: 'OneHourToponymy',
-            image_path: '@/assets/visuals/1hour_toponymy.png',
+            image_path: '/images/1tiktok.png',
             useIframe: true,
             htmlPath: '/1hour_toponymy_datamapplot.html'
         };

@@ -12,7 +12,7 @@ export default {
         return {
             title: 'Particle Lenia Datamap',
             slug: 'ParticleLeniaDatamap',
-            image_path: '@/assets/visuals/particle_lenia_datamap.png'
+            image_path: '/images/leniaexplorer.png'
         };
     },
     mounted() {

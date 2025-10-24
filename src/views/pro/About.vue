@@ -37,7 +37,7 @@ export default {
 <style scoped>
 
 .content {
-    height: 100%;
+    min-height: 100vh;
     margin: 0px;
     padding: 0px;
     background-color: lightsteelblue;
@@ -46,21 +46,21 @@ export default {
 .content-body {
   background-repeat: no-repeat;
   background-size: 100% auto;
-  height: 100%;
+  min-height: 100vh;
   width: 100%;
 }
 
 .center-col {
   margin-right: 30%;
   margin-left: 30%;
-  height: 100%;
+  min-height: 100vh;
   background-color: lightgoldenrodyellow;
 }
 
 .text-col {
   margin-right: 10%;
   margin-left: 10%;
-  height: 100%;
+  min-height: 100vh;
 }
 
 #about-text {

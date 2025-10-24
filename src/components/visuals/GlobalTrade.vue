@@ -20,9 +20,9 @@ export default {
         
         
         return {
-            title: 'GlobalTrade',
+            title: 'Global Trade',
             slug: 'GlobalTrade',
-            image_path: '@/assets/visuals/school.png'
+            image_path: '/images/trade.png'
         }
     },
     mounted() {

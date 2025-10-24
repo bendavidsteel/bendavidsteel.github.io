@@ -15,7 +15,7 @@ export default {
 			resize: true,
             title: 'Schooling Fish',
             slug: 'School',
-            image_path: '@/assets/visuals/school.png'
+            image_path: '/images/boids.png'
         };
     },
     mounted() {

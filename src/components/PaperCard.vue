@@ -1,71 +1,73 @@
 <template>
-    <div class="paper-card">
-        <div class="paper-content">
-            <h3 class="paper-title">{{ title }}</h3>
-            <p class="paper-authors">{{ authors }}</p>
-            <p class="paper-venue">{{ venue }}<span v-if="year"> ({{ year }})</span></p>
-            <div class="paper-links">
-                <a v-if="url" :href="url" class="paper-link" target="_blank">Paper</a>
-                <a v-if="code_url" :href="code_url" class="paper-link" target="_blank">Code</a>
-            </div>
+    <base-card :image_url="image_url" :imageAlt="title">
+        <a v-if="url" :href="url" target="_blank" class="title-link">
+            <h3 class="title">{{ title }}</h3>
+        </a>
+        <h3 v-else class="title">{{ title }}</h3>
+        <p class="authors">{{ authors }}</p>
+        <p class="venue">{{ venue }}<span v-if="year"> ({{ year }})</span></p>
+        <div v-if="code_url" class="links">
+            <a :href="code_url" class="link" target="_blank">Code</a>
         </div>
-    </div>
+    </base-card>
 </template>
 
 <script lang="ts">
+import BaseCard from './BaseCard.vue'
+
 export default {
+    components: {
+        BaseCard
+    },
     props: {
         title: String,
         authors: String,
         venue: String,
         year: Number,
         url: String,
-        code_url: String
+        code_url: String,
+        image_url: String
     }
 }
 </script>
 
 <style scoped>
-.paper-card {
-    background-color: lightskyblue;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 4px;
+.title-link {
+    text-decoration: none;
+    color: inherit;
 }
 
-.paper-content {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+.title-link:hover .title {
+    text-decoration: underline;
 }
 
-.paper-title {
+.title {
     font-family: 'Courier New', Courier, monospace;
     font-size: 22px;
     margin: 0;
     color: darkslateblue;
 }
 
-.paper-authors {
+.authors {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     margin: 0;
     font-style: italic;
 }
 
-.paper-venue {
+.venue {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     margin: 0;
 }
 
-.paper-links {
+.links {
     display: flex;
     gap: 15px;
     margin-top: 8px;
 }
 
-.paper-link {
+.link {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     color: darkmagenta;
@@ -73,7 +75,7 @@ export default {
     font-weight: bold;
 }
 
-.paper-link:hover {
+.link:hover {
     text-decoration: underline;
 }
 </style>

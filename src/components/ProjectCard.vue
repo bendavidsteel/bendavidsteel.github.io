@@ -1,61 +1,63 @@
 <template>
-    <div class="project-card">
-        <div class="project-content">
-            <h3 class="project-title">{{ title }}</h3>
-            <p class="project-description">{{ description }}</p>
-            <div class="project-links">
-                <a v-if="url" :href="url" class="project-link" target="_blank">View Project</a>
-                <a v-if="code_url" :href="code_url" class="project-link" target="_blank">Code</a>
-            </div>
+    <base-card :image_url="image_url" :imageAlt="title">
+        <a v-if="url" :href="url" target="_blank" class="title-link">
+            <h3 class="title">{{ title }}</h3>
+        </a>
+        <h3 v-else class="title">{{ title }}</h3>
+        <p class="description">{{ description }}</p>
+        <div v-if="code_url" class="links">
+            <a :href="code_url" class="link" target="_blank">Code</a>
         </div>
-    </div>
+    </base-card>
 </template>
 
 <script lang="ts">
+import BaseCard from './BaseCard.vue'
+
 export default {
+    components: {
+        BaseCard
+    },
     props: {
         title: String,
         description: String,
         url: String,
-        code_url: String
+        code_url: String,
+        image_url: String
     }
 }
 </script>
 
 <style scoped>
-.project-card {
-    background-color: lightskyblue;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 4px;
+.title-link {
+    text-decoration: none;
+    color: inherit;
 }
 
-.project-content {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+.title-link:hover .title {
+    text-decoration: underline;
 }
 
-.project-title {
+.title {
     font-family: 'Courier New', Courier, monospace;
     font-size: 22px;
     margin: 0;
     color: darkslateblue;
 }
 
-.project-description {
+.description {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     margin: 0;
 }
 
-.project-links {
+.links {
     display: flex;
     gap: 15px;
     margin-top: 8px;
 }
 
-.project-link {
+.link {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     color: darkmagenta;
@@ -63,7 +65,7 @@ export default {
     font-weight: bold;
 }
 
-.project-link:hover {
+.link:hover {
     text-decoration: underline;
 }
 </style>

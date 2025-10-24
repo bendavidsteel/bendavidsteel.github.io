@@ -11,7 +11,7 @@ export default {
         return {
             title: 'Douyin Post Topics',
             slug: 'DouyinPostTopics',
-            image_path: '@/assets/visuals/douyin_post_topics.png',
+            image_path: '/images/douyin.png',
             useIframe: true,
             htmlPath: '/douyin_post_topics.html'
         };

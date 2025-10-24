@@ -30,7 +30,8 @@
                             :venue="paper.venue"
                             :year="paper.year"
                             :url="paper.url"
-                            :code_url="paper.code_url">
+                            :code_url="paper.code_url"
+                            :image_url="paper.image_url">
                         </paper-card>
                     </div>
                 </div>
@@ -44,7 +45,8 @@
                             :title="project.title"
                             :description="project.description"
                             :url="project.url"
-                            :code_url="project.code_url">
+                            :code_url="project.code_url"
+                            :image_url="project.image_url">
                         </project-card>
                     </div>
                 </div>
@@ -59,8 +61,37 @@
                             :outlet="mention.outlet"
                             :date="mention.date"
                             :description="mention.description"
-                            :url="mention.url">
+                            :url="mention.url"
+                            :image_url="mention.image_url">
                         </media-mention-card>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Fav Ascents</h2>
+                <div class="section-content">
+                    <div v-for="ascent in ascents" v-bind:key="ascent.title">
+                        <ascent-card
+                            :title="ascent.title"
+                            :description="ascent.description"
+                            :date="ascent.date"
+                            :image_url="ascent.image_url">
+                        </ascent-card>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Fav Descents</h2>
+                <div class="section-content">
+                    <div v-for="descent in descents" v-bind:key="descent.title">
+                        <descent-card
+                            :title="descent.title"
+                            :description="descent.description"
+                            :date="descent.date"
+                            :image_url="descent.image_url">
+                        </descent-card>
                     </div>
                 </div>
             </section>
@@ -72,13 +103,17 @@
 import PaperCard from '@/components/PaperCard'
 import ProjectCard from '@/components/ProjectCard'
 import MediaMentionCard from '@/components/MediaMentionCard'
+import AscentCard from '@/components/AscentCard'
+import DescentCard from '@/components/DescentCard'
 
 export default {
     components: {
         // ArticleCard,
         PaperCard,
         ProjectCard,
-        MediaMentionCard
+        MediaMentionCard,
+        AscentCard,
+        DescentCard
     },
     data() {
         const req = require.context('@/components/articles/', true, /\.vue$/i);
@@ -94,14 +129,16 @@ export default {
                     venue: "under review, pre-print on arxiv",
                     year: 2025,
                     url: "https://arxiv.org/pdf/2504.13279",
-                    code_url: "https://github.com/bendavidsteel/tiktok-slice"
+                    code_url: "https://github.com/bendavidsteel/tiktok-slice",
+                    image_url: "/images/24tiktok.png"
                 },
                 {
                     title: "Corpus-Oriented Stance Target Extraction",
                     authors: "B. Steel, D. Ruths",
                     venue: "CODI-CRAC @ EMNLP 2025",
                     year: 2025,
-                    code_url: "https://github.com/bendavidsteel/stancemining"
+                    code_url: "https://github.com/bendavidsteel/stancemining",
+                    image_url: "/images/costex.png",
                 },
                 {
                     title: "Can-PolNews: A Multi-Platform Dataset of Political Discourse in Canada",
@@ -115,7 +152,8 @@ export default {
                     authors: "B. Steel, D. Ruths",
                     venue: "WASSA @ ACL 2024",
                     year: 2024,
-                    url: "https://aclanthology.org/2024.wassa-1.16/"
+                    url: "https://aclanthology.org/2024.wassa-1.16/",
+                    image_url: "/images/redditstance.png"
                 }
             ],
             projects: [
@@ -123,29 +161,33 @@ export default {
                     title: "Extended Particle Lenia Explorer",
                     description: "Interactive web app to explore instantiations of extended particle lenia",
                     url: "https://bendavidsteel.github.io/particle_lenia_datamap.html",
-                    code_url: "https://github.com/bendavidsteel/mysarum/tree/main/python/particlelife"
+                    code_url: "https://github.com/bendavidsteel/mysarum/tree/main/python/particlelife",
+                    image_url: "/images/leniaexplorer.png"
                 },
                 {
                     title: "The Grove",
                     description: "3D physarum, 3D boids, and self-organising trees in a procedurally generated grove",
                     url: "https://www.youtube.com/watch?v=foZvAobP6Pg",
-                    code_url: "https://github.com/bendavidsteel/mysarum/tree/main/openframeworks/thegrove"
+                    code_url: "https://github.com/bendavidsteel/mysarum/tree/main/openframeworks/thegrove",
+                    image_url: "/images/thegrove.png"
                 },
                 {
                     title: "A City with No Cars",
                     description: "Semi-satirical year round pedestrianization of Mont-Royal call for arms based on Connor O'Malley's Endorphin Port, winner of best film and best special effects at Friends Film Fest 2023",
-                    url: "https://www.youtube.com/watch?v=YZS0BvAAn1U"
+                    url: "https://www.youtube.com/watch?v=YZS0BvAAn1U",
+                    image_url: "/images/citywithnocars.png"
                 },
                 {
                     title: "Biomass",
                     description: "2D physarum + reaction diffusion made into a world, shown at Sam's art night and Boheme Systeme",
                     url: "https://www.instagram.com/p/Cq3PrTjptFB/?img_index=1",
-                    code_url: "https://github.com/bendavidsteel/mysarum/tree/main/openframeworks/biomass"
+                    code_url: "https://github.com/bendavidsteel/mysarum/tree/main/openframeworks/biomass",
+                    image_url: "/images/biomass.jpg"
                 }
             ],
             media_mentions: [
                 {
-                    title: "What Are TikTok’s New Owners Buying?",
+                    title: "What Are TikTok's New Owners Buying?",
                     outlet: "The Economist",
                     date: new Date(2025, 9, 26),
                     description: "Use of our data to describe TikTok content",
@@ -164,6 +206,40 @@ export default {
                     date: new Date(2025, 4, 26),
                     description: "Talking about the Canadian election x TikTok",
                     url: "https://www.tiktok.com/@cbcnews/video/7497427834483248439"
+                }
+            ],
+            ascents: [
+                {
+                    title: "Hairpin + Skywalker in a day",
+                    description: "My 2nd 10a trad multi + fun runout links on Skywalker to finish the day with Hannah. (pic from a different route on the same Squamish holiday because we were hustling and it's a good pic)",
+                    date: new Date(2025, 8, 24),
+                    image_url: "/images/warfare.jpg"
+                },
+                {
+                    title: "The Armadillo",
+                    description: "4 hour bushwack walk-in to an incred alpine-esque route in Maine with Ben and Mike",
+                    date: new Date(2025, 8, 9),
+                    image_url: "/images/armadillo.png"
+                },
+                {
+                    title: "Moby Grape",
+                    description: "Classic big 5.8 trad multi on Cannon in the Whites with Ben. (not my pic because we were hustling)",
+                    date: new Date(2025, 7, 20),
+                    image_url: "/images/mobygrape.jpg"
+                }
+            ],
+            descents: [
+                {
+                    title: "Gulf of Slides, Main Slide",
+                    description: "Amazing corn snow, with Joe and Mike",
+                    date: new Date(2025, 4, 10),
+                    image_url: "/images/gulfofslides.jpg"
+                },
+                {
+                    title: "Hellman's Highway",
+                    description: "Sick descent after a beautiful walk over the ridge with Joe and Mike",
+                    date: new Date(2025, 4, 10),
+                    image_url: "/images/hellmans.png"
                 }
             ]
         }

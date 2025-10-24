@@ -12,7 +12,7 @@ export default {
         return {
             title: 'Particle Lenia 2D',
             slug: 'ParticleLenia',
-            image_path: '@/assets/visuals/particle_lenia.png'
+            image_path: '/images/lenia.png'
         };
     },
     mounted() {

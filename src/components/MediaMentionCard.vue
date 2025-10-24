@@ -1,22 +1,28 @@
 <template>
-    <div class="media-card">
-        <div class="media-content">
-            <h3 class="media-title">{{ title }}</h3>
-            <p class="media-outlet">{{ outlet }}<span v-if="date"> - {{ formatDate(date) }}</span></p>
-            <p v-if="description" class="media-description">{{ description }}</p>
-            <a v-if="url" :href="url" class="media-link" target="_blank">Read More</a>
-        </div>
-    </div>
+    <base-card :image_url="image_url" :imageAlt="title">
+        <a v-if="url" :href="url" target="_blank" class="title-link">
+            <h3 class="title">{{ title }}</h3>
+        </a>
+        <h3 v-else class="title">{{ title }}</h3>
+        <p class="outlet">{{ outlet }}<span v-if="date"> - {{ formatDate(date) }}</span></p>
+        <p v-if="description" class="description">{{ description }}</p>
+    </base-card>
 </template>
 
 <script lang="ts">
+import BaseCard from './BaseCard.vue'
+
 export default {
+    components: {
+        BaseCard
+    },
     props: {
         title: String,
         outlet: String,
         date: Date,
         description: String,
-        url: String
+        url: String,
+        image_url: String
     },
     methods: {
         formatDate(date: Date) {
@@ -27,48 +33,32 @@ export default {
 </script>
 
 <style scoped>
-.media-card {
-    background-color: lightskyblue;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 4px;
+.title-link {
+    text-decoration: none;
+    color: inherit;
 }
 
-.media-content {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+.title-link:hover .title {
+    text-decoration: underline;
 }
 
-.media-title {
+.title {
     font-family: 'Courier New', Courier, monospace;
     font-size: 22px;
     margin: 0;
     color: darkslateblue;
 }
 
-.media-outlet {
+.outlet {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     margin: 0;
     font-weight: bold;
 }
 
-.media-description {
+.description {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     margin: 0;
-}
-
-.media-link {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
-    color: darkmagenta;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.media-link:hover {
-    text-decoration: underline;
 }
 </style>

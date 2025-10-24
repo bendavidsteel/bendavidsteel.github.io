@@ -1,14 +1,18 @@
 <template>
-    <div>
-        <a :href="'fullscreen/visual/' + slug">
-            <img :src="image_path" alt="Visual image">
-            <h1>{{ title }}</h1>
+    <base-card :image_url="image_path" :imageAlt="title">
+        <a :href="'fullscreen/visual/' + slug" class="title-link">
+            <h3 class="title">{{ title }}</h3>
         </a>
-    </div>
+    </base-card>
 </template>
 
 <script>
+import BaseCard from './BaseCard.vue'
+
 export default {
+    components: {
+        BaseCard
+    },
     props: {
         title: String,
         image_path: String,
@@ -16,3 +20,21 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.title-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.title-link:hover .title {
+    text-decoration: underline;
+}
+
+.title {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 22px;
+    margin: 0;
+    color: darkslateblue;
+}
+</style>
