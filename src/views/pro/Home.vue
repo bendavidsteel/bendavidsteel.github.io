@@ -194,6 +194,13 @@ export default {
                     url: "https://www.economist.com/graphic-detail/2025/09/26/what-are-tiktoks-new-owners-buying"
                 },
                 {
+                    title: "TikTok im Fokus der Wissenschaft",
+                    outlet: "Deutschlandfunk",
+                    date: new Date(2025, 5, 16),
+                    description: "Interview about our TikTok data collection",
+                    url: "https://www.deutschlandfunk.de/social-media-digitale-oeffentlichkeit-tiktok-forschung-100.html"
+                },
+                {
                     title: "Inside a Single Day on TikTok: 117 Million Videos, Billions of Views",
                     outlet: "Fast Company",
                     date: new Date(2025, 4, 28),
