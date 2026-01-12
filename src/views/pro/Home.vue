@@ -126,9 +126,9 @@ export default {
                 {
                     title: "Just Another Hour on TikTok: ID sampling to obtain a complete slice of TikTok",
                     authors: "B. Steel, M. Schirmer, D. Ruths, J. Pfeffer",
-                    venue: "under review, pre-print on arxiv",
+                    venue: "Journal of Quantitative Description: Digital Media",
                     year: 2025,
-                    url: "https://arxiv.org/pdf/2504.13279",
+                    url: "https://journalqd.org/article/view/9514",
                     code_url: "https://github.com/bendavidsteel/tiktok-slice",
                     image_url: "/images/24tiktok.png"
                 },
