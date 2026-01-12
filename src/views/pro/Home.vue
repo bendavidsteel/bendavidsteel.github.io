@@ -137,6 +137,7 @@ export default {
                     authors: "B. Steel, D. Ruths",
                     venue: "CODI-CRAC @ EMNLP 2025",
                     year: 2025,
+                    url: "https://aclanthology.org/2025.codi-1.18/",
                     code_url: "https://github.com/bendavidsteel/stancemining",
                     image_url: "/images/costex.png",
                 },
