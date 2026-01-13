@@ -9,11 +9,13 @@
 export default {
     data() {
         return {
-            title: '1-Hour Toponymy Data Map',
+            title: 'DataMap of our 1 hour on TikTok dataset',
             slug: 'OneHourToponymy',
+            desc: 'A datamap visualization of the topics found in a dataset of all (~5 million) TikTok posts from one hour.',
             image_path: '/images/1tiktok.png',
             useIframe: true,
-            htmlPath: '/1hour_toponymy_datamapplot.html'
+            htmlPath: '/1hour_toponymy_datamapplot.html',
+            date: '2025-06-01'
         };
     },
     mounted() {

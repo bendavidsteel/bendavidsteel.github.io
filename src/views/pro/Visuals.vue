@@ -11,7 +11,8 @@
                         <visual-card
                             :title="visual.title"
                             :image_path="visual.image_path"
-                            :slug="visual.slug">
+                            :slug="visual.slug"
+                            :desc="visual.desc">
                         </visual-card>
                     </div>
                 </div>
@@ -32,6 +33,7 @@ export default {
         const visual_data = req.keys().map(key => {
                 return req(key).default.data()
             });
+        visual_data.sort((a, b) => new Date(b.date) - new Date(a.date));
         return {
             visuals: visual_data
         }

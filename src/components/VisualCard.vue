@@ -3,6 +3,7 @@
         <a :href="'fullscreen/visual/' + slug" class="title-link">
             <h3 class="title">{{ title }}</h3>
         </a>
+        <p v-if="desc" class="desc">{{ desc }}</p>
     </base-card>
 </template>
 
@@ -16,7 +17,8 @@ export default {
     props: {
         title: String,
         image_path: String,
-        slug: String
+        slug: String,
+        desc: String
     }
 }
 </script>
@@ -36,5 +38,12 @@ export default {
     font-size: 22px;
     margin: 0;
     color: darkslateblue;
+}
+
+.desc {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    margin: 8px 0 0 0;
+    color: #555;
 }
 </style>

@@ -12,7 +12,9 @@ export default {
         return {
             title: 'Particle Lenia Datamap',
             slug: 'ParticleLeniaDatamap',
-            image_path: '/images/leniaexplorer.png'
+            desc: 'A datamap visualization of instantiations of Particle Lenia, discovered using vision/text encoders.',
+            image_path: '/images/leniaexplorer.png',
+            date: '2025-09-10'
         };
     },
     mounted() {

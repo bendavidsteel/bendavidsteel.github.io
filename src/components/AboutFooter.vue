@@ -2,7 +2,7 @@
   <footer class="footer" :style="{'background-image': 'url(' + require('@/assets/footerpic.jpg') + ')'}">
     <div class="tabs">
       <a href="https://github.com/bendavidsteel/" target="_blank">github</a>
-      <a href="https://twitter.com/bendavidsteel" target="_blank">twitter</a>
+      <a href="https://x.com/bendavidsteel" target="_blank">twitter</a>
       <a href="https://www.linkedin.com/in/ben-steel-9270b5126/" target="_blank">linkedin</a>
     </div>
   </footer>

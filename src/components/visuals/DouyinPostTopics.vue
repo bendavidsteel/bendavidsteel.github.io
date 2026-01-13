@@ -12,8 +12,10 @@ export default {
             title: 'Douyin Post Topics',
             slug: 'DouyinPostTopics',
             image_path: '/images/douyin.png',
+            desc: 'A visualization of the topics in a scraped dataset of 1.2 million Douyin posts (the Chinese version of TikTok).',
             useIframe: true,
-            htmlPath: '/douyin_post_topics.html'
+            htmlPath: '/douyin_post_topics.html',
+            date: '2025-10-01'
         };
     },
     mounted() {
