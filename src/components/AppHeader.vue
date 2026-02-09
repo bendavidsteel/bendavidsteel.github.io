@@ -4,6 +4,7 @@
       <a href="/">home</a>
       <a href="/about">about</a>
       <a href="/visuals">visuals</a>
+      <a href="/writing">writing</a>
     </div>
   </header>
 </template>

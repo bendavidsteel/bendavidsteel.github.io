@@ -25,6 +25,10 @@ export default createRouter({
           component: () => import('@/views/pro/Visuals.vue')
         },
         {
+          path: "/writing",
+          component: () => import('@/views/pro/Writing.vue')
+        },
+        {
           path: "/visual/:slug",
           component: () => import("@/views/pro/Visual.vue"),
           props: true
