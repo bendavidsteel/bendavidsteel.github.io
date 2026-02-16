@@ -30,18 +30,18 @@ export default {
         return {
             posts: [
                 {
-                    title: "There's an easy solution to Canada's TikTok problem",
-                    date: new Date(2026, 2, 6),
-                    description: "TikTok is uniquely blocking research access in Canada for no apparent reason. We're in the dark when it comes to online harms.",
-                    url: "https://bensteel.substack.com/p/theres-an-easy-solution-to-canadas",
-                    image_url: "/images/tiktok-canada.webp"
-                },
-                {
                     title: "Moltbook is good, but should be better",
                     date: new Date(2026, 2, 16),
                     description: "We're under-valuing this glimpse into the future",
                     url: "https://bensteel.substack.com/p/moltbook-is-good-but-should-be-better",
                     image_url: "/images/moltbook.png"
+                },
+                {
+                    title: "There's an easy solution to Canada's TikTok problem",
+                    date: new Date(2026, 2, 6),
+                    description: "TikTok is uniquely blocking research access in Canada for no apparent reason. We're in the dark when it comes to online harms.",
+                    url: "https://bensteel.substack.com/p/theres-an-easy-solution-to-canadas",
+                    image_url: "/images/tiktok-canada.webp"
                 }
             ]
         }
