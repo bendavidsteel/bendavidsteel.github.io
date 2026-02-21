@@ -1,5 +1,13 @@
 module.exports = {
     configureWebpack: {
-        devtool: 'source-map'
+        devtool: 'source-map',
+        module: {
+            rules: [
+                {
+                    test: /\.md$/,
+                    type: 'asset/source'
+                }
+            ]
+        }
     }
 }
