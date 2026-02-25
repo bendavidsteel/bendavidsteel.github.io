@@ -18,6 +18,8 @@ s_j, a_j & \text{if } \|p_i - p_j\| < r \text{ and } \frac{s_i \cdot s_j}{\|s_i\
 s_i, a_i & \text{otherwise}
 \end{cases}$$
 
+At this point, you can also easily add in things like mutation, where particles in small areas of the simulation randomly have their species and interaction vectors slightly changed, which can help to increase diversity and allow for more interesting evolution to occur.
+
 I've implemented this system in [python + JAX](https://github.com/bendavidsteel/evoparticlelife) and an interaction version you can play with [here](/evo_particle_life.html) using nannou + WebGPU + WASM. I'm planning on adding a more thorough explanation of the system parameters soon.
 
 [![Evo Particle Life](/images/evo_particle_life.png)](/evo_particle_life.html)
