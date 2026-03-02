@@ -14,7 +14,8 @@ export default {
             slug: 'ParticleLenia',
             desc: 'An interactive 2D simulation of Particle Lenia, a continuous cellular automaton that exhibits lifelike behaviors.',
             image_path: '/images/lenia.png',
-            date: '2025-09-10'
+            date: '2025-09-10',
+            category: 'alife sim'
         };
     },
     mounted() {

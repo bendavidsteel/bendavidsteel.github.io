@@ -15,7 +15,8 @@ export default {
             image_path: '/images/moltbook.png',
             useIframe: true,
             htmlPath: '/moltbook_topics.html',
-            date: '2026-02-03'
+            date: '2026-02-03',
+            category: 'data viz'
         };
     },
     mounted() {

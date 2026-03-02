@@ -24,7 +24,8 @@ export default {
             slug: 'GlobalTrade',
             desc: 'An interactive 3D globe visualization showing global trade flows between countries from 1960 to 2022.',
             image_path: '/images/trade.png',
-            date: '2020-03-01'
+            date: '2020-03-01',
+            category: 'data viz'
         }
     },
     mounted() {

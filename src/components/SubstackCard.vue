@@ -6,6 +6,9 @@
         <h3 v-else class="title">{{ title }}</h3>
         <p v-if="date" class="date">{{ formatDate(date) }}</p>
         <p v-if="description" class="description">{{ description }}</p>
+        <div v-if="category" class="links">
+            <span class="link">{{ category }}</span>
+        </div>
     </base-card>
 </template>
 
@@ -21,7 +24,8 @@ export default {
         date: Date,
         description: String,
         url: String,
-        image_url: String
+        image_url: String,
+        category: String
     },
     methods: {
         formatDate(date: Date) {
@@ -52,6 +56,20 @@ export default {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     margin: 0;
+    font-weight: bold;
+}
+
+.links {
+    display: flex;
+    gap: 15px;
+    margin-top: 8px;
+}
+
+.link {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: darkmagenta;
+    text-decoration: none;
     font-weight: bold;
 }
 

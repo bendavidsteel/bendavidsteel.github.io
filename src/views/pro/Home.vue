@@ -11,7 +11,6 @@
                     <h4 id='descrip'>
                         PhD candidate with <a class="link" href="https://derekruths.com/">Derek Ruths</a> in the <a class="link" href="http://networkdynamics.org/">Network Dynamics Lab</a><br>
                         researcher @ <a class="link" href="https://meo.ca/">Media Ecosystem Observatory</a><br>
-                        former dev @ <a class="link" href="https://www.mayahtt.com/">MayaHTT</a> and <a class="link" href="https://www.ubisoft.com/en-gb/">Ubisoft</a><br>
                         computational social science<br>
                         climber | skier | backpacker
                     </h4>
@@ -167,7 +166,7 @@ export default {
                 },
                 {
                     title: "The Grove",
-                    description: "3D physarum, 3D boids, and self-organising trees in a procedurally generated grove",
+                    description: "3D physarum, 3D boids, and self-organising trees in a procedurally generated grove, shown at the Friends Film Fest 2023",
                     url: "https://www.youtube.com/watch?v=foZvAobP6Pg",
                     code_url: "https://github.com/bendavidsteel/mysarum/tree/main/openframeworks/thegrove",
                     image_url: "/images/thegrove.png"

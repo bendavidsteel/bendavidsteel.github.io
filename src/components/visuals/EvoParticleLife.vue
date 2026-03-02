@@ -14,7 +14,8 @@ export default {
             slug: 'EvoParticleLife',
             desc: 'An implicit evolution extension to particle life, built with Bevy and WebGPU, featuring emergent lifelike behaviors from simple interaction rules.',
             image_path: '/images/evo_particle_life.png',
-            date: '2026-02-16'
+            date: '2026-02-16',
+            category: 'alife sim'
         };
     },
     mounted() {

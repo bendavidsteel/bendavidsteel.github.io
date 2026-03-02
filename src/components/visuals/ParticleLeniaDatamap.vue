@@ -14,7 +14,8 @@ export default {
             slug: 'ParticleLeniaDatamap',
             desc: 'A datamap visualization of instantiations of Particle Lenia, discovered using vision/text encoders.',
             image_path: '/images/leniaexplorer.png',
-            date: '2025-09-10'
+            date: '2025-09-10',
+            category: 'alife sim'
         };
     },
     mounted() {

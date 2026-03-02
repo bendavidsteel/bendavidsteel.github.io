@@ -4,3 +4,4 @@ export { default as EndymionThoughts } from './endymionthoughts/EndymionThoughts
 export { default as Psychohistory } from './psychohistory/Psychohistory.vue'
 export { default as TikTokSadness } from './tiktoksadness/TikTokSadness.vue'
 export { default as ImplicitEvoParticleLife } from './evoparticlelife/ImplicitEvoParticleLife.vue'
+export { default as TheSun } from './thesun/TheSun.vue'

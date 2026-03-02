@@ -12,7 +12,8 @@
                             :title="visual.title"
                             :image_path="visual.image_path"
                             :slug="visual.slug"
-                            :desc="visual.desc">
+                            :desc="visual.desc"
+                            :category="visual.category">
                         </visual-card>
                     </div>
                 </div>

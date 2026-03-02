@@ -12,6 +12,7 @@
 .header {
   position: fixed;
   top: 0;
+  z-index: 1000;
   background-color: goldenrod;
   background-position: bottom -20px left 0px;
   background-repeat: no-repeat;

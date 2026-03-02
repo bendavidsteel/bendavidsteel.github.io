@@ -4,6 +4,9 @@
             <h3 class="title">{{ title }}</h3>
         </a>
         <p v-if="desc" class="desc">{{ desc }}</p>
+        <div v-if="category" class="links">
+            <span class="link">{{ category }}</span>
+        </div>
     </base-card>
 </template>
 
@@ -18,7 +21,8 @@ export default {
         title: String,
         image_path: String,
         slug: String,
-        desc: String
+        desc: String,
+        category: String
     }
 }
 </script>
@@ -45,5 +49,19 @@ export default {
     font-size: 16px;
     margin: 8px 0 0 0;
     color: #555;
+}
+
+.links {
+    display: flex;
+    gap: 15px;
+    margin-top: 8px;
+}
+
+.link {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: darkmagenta;
+    text-decoration: none;
+    font-weight: bold;
 }
 </style>

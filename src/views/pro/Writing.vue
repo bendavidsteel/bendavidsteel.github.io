@@ -10,7 +10,8 @@
                             :date="post.date"
                             :description="post.description"
                             :url="post.url"
-                            :image_url="post.image_url">
+                            :image_url="post.image_url"
+                            :category="post.category">
                         </substack-card>
                     </div>
                 </div>
@@ -30,25 +31,36 @@ export default {
         return {
             posts: [
                 {
+                    title: "The Whale and the Sun",
+                    date: new Date(2026, 2, 1),
+                    description: "A short story about a whale and the sun",
+                    url: "/articles/TheSun",
+                    image_url: "/images/asahi.webp",
+                    category: "fiction"
+                },
+                {
                     title: "Implicit evolution extension to particle life",
                     date: new Date(2026, 1, 21),
                     description: "Evolving interaction rules in particle life simulations",
                     url: "/articles/ImplicitEvoParticleLife",
-                    image_url: "/images/evo_particle_life.png"
+                    image_url: "/images/evo_particle_life.png",
+                    category: "blog"
                 },
                 {
                     title: "Moltbook is good, but should be better",
                     date: new Date(2026, 1, 16),
-                    description: "We're under-valuing this glimpse into the future",
+                    description: "Eliciting AI capabilities through social media is good, and should be improved.",
                     url: "https://bensteel.substack.com/p/moltbook-is-good-but-should-be-better",
-                    image_url: "/images/moltbook.png"
+                    image_url: "/images/moltbook.png",
+                    category: "substack"
                 },
                 {
                     title: "There's an easy solution to Canada's TikTok problem",
                     date: new Date(2026, 1, 6),
                     description: "TikTok is uniquely blocking research access in Canada for no apparent reason. We're in the dark when it comes to online harms.",
                     url: "https://bensteel.substack.com/p/theres-an-easy-solution-to-canadas",
-                    image_url: "/images/tiktok-canada.webp"
+                    image_url: "/images/tiktok-canada.webp",
+                    category: "substack"
                 }
             ]
         }

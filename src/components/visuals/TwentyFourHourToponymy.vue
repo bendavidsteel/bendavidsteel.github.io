@@ -15,7 +15,8 @@ export default {
             image_path: '/images/24tiktok.png',
             useIframe: true,
             htmlPath: '/24hour_toponymy_datamapplot.html',
-            date: '2025-06-15'
+            date: '2025-06-15',
+            category: 'data viz'
         };
     },
     mounted() {

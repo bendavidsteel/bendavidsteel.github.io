@@ -17,7 +17,8 @@ export default {
             slug: 'School',
             desc: 'A canvas simulation of schooling fish behavior using simple rules for alignment, cohesion, and separation.',
             image_path: '/images/boids.png',
-            date: '2021-12-15'
+            date: '2021-12-15',
+            category: 'alife sim'
         };
     },
     mounted() {

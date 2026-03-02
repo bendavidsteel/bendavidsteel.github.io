@@ -15,7 +15,8 @@ export default {
             desc: 'A visualization of the topics in a scraped dataset of 1.2 million Douyin posts (the Chinese version of TikTok).',
             useIframe: true,
             htmlPath: '/douyin_post_topics.html',
-            date: '2025-10-01'
+            date: '2025-10-01',
+            category: 'data viz'
         };
     },
     mounted() {
