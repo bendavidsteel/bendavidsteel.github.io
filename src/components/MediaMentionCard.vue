@@ -1,21 +1,15 @@
 <template>
-    <base-card :image_url="image_url" :imageAlt="title">
+    <div class="mention-card">
         <a v-if="url" :href="url" target="_blank" class="title-link">
-            <h3 class="title">{{ title }}</h3>
+            <span class="title">{{ title }}</span>
         </a>
-        <h3 v-else class="title">{{ title }}</h3>
-        <p class="outlet">{{ outlet }}<span v-if="date"> - {{ formatDate(date) }}</span></p>
-        <p v-if="description" class="description">{{ description }}</p>
-    </base-card>
+        <span v-else class="title">{{ title }}</span>
+        <span class="meta"> — {{ outlet }}<span v-if="date">, {{ formatDate(date) }}</span></span>
+    </div>
 </template>
 
 <script lang="ts">
-import BaseCard from './BaseCard.vue'
-
 export default {
-    components: {
-        BaseCard
-    },
     props: {
         title: String,
         outlet: String,
@@ -26,13 +20,20 @@ export default {
     },
     methods: {
         formatDate(date: Date) {
-            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
         }
     }
 }
 </script>
 
 <style scoped>
+.mention-card {
+    background-color: lightskyblue;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    padding: 10px 16px;
+}
+
 .title-link {
     text-decoration: none;
     color: inherit;
@@ -44,21 +45,14 @@ export default {
 
 .title {
     font-family: 'Courier New', Courier, monospace;
-    font-size: 22px;
-    margin: 0;
-    color: darkslateblue;
-}
-
-.outlet {
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
-    margin: 0;
+    color: darkslateblue;
     font-weight: bold;
 }
 
-.description {
+.meta {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
-    margin: 0;
+    font-size: 14px;
+    color: #444;
 }
 </style>

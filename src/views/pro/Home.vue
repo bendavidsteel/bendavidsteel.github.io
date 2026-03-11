@@ -59,9 +59,21 @@
                             :title="mention.title"
                             :outlet="mention.outlet"
                             :date="mention.date"
-                            :description="mention.description"
-                            :url="mention.url"
-                            :image_url="mention.image_url">
+                            :url="mention.url">
+                        </media-mention-card>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Reports</h2>
+                <div class="section-content">
+                    <div v-for="report in reports" v-bind:key="report.title">
+                        <media-mention-card
+                            :title="report.title"
+                            :outlet="report.outlet"
+                            :date="report.date"
+                            :url="report.url">
                         </media-mention-card>
                     </div>
                 </div>
@@ -187,32 +199,54 @@ export default {
             ],
             media_mentions: [
                 {
+                    title: "Fact File: As Iran war escalates, fake videos and images proliferate online",
+                    outlet: "The Canadian Press",
+                    date: new Date(2026, 2, 11),
+                    url: "https://www.thecanadianpressnews.ca/science/fact-file-as-iran-war-escalates-fake-videos-and-images-proliferate-online/article_ee6cadb5-9e1f-5a99-a37d-3552e1580a9e.html"
+                },
+                {
                     title: "What Are TikTok's New Owners Buying?",
                     outlet: "The Economist",
                     date: new Date(2025, 9, 26),
-                    description: "Use of our data to describe TikTok content",
                     url: "https://www.economist.com/graphic-detail/2025/09/26/what-are-tiktoks-new-owners-buying"
                 },
                 {
                     title: "TikTok im Fokus der Wissenschaft",
                     outlet: "Deutschlandfunk",
                     date: new Date(2025, 5, 16),
-                    description: "Interview about our TikTok data collection",
                     url: "https://www.deutschlandfunk.de/social-media-digitale-oeffentlichkeit-tiktok-forschung-100.html"
                 },
                 {
                     title: "Inside a Single Day on TikTok: 117 Million Videos, Billions of Views",
                     outlet: "Fast Company",
                     date: new Date(2025, 4, 28),
-                    description: "Coverage of our paper",
                     url: "https://www.fastcompany.com/91323722/inside-a-single-day-on-tiktok-117-million-videos-billions-of-views"
                 },
                 {
                     title: "Have TikTok content creators influenced the Canadian election?",
                     outlet: "CBC News on TikTok",
                     date: new Date(2025, 4, 26),
-                    description: "Talking about the Canadian election x TikTok",
                     url: "https://www.tiktok.com/@cbcnews/video/7497427834483248439"
+                }
+            ],
+            reports: [
+                {
+                    title: "Conspiratorial Claims and Institutional Distrust in Canada's Online Ecosystem",
+                    outlet: "MEO",
+                    date: new Date(2026, 1, 23),
+                    url: "https://meo.ca/work/conspiratorial-claims-and-institutional-distrust-in-canadas-online-ecosystem"
+                },
+                {
+                    title: "Shockwaves on TikTok: Understanding the international reaction to the assassination of Charlie Kirk",
+                    outlet: "MEO",
+                    date: new Date(2025, 10, 26),
+                    url: "https://www.cdmrn.ca/publications/understanding-the-international-reaction-to-the-assassination-of-charlie-kirk"
+                },
+                {
+                    title: "The relevance and role of Tenet Media personalities in Canadian political discussion",
+                    outlet: "MEO",
+                    date: new Date(2024, 10, 5),
+                    url: "https://www.cdmrn.ca/publications/russianfundingcanadianinfluencers/iu6-relevance-role-of-tenet-media-personalities-in-cdn-political-discussion"
                 }
             ],
             ascents: [

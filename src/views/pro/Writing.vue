@@ -31,7 +31,15 @@ export default {
         return {
             posts: [
                 {
-                    title: "The Whale and the Sun",
+                    title: "The future of AI-generated media",
+                    date: new Date(2026, 2, 11),
+                    description: "My speculation on what is to come",
+                    url: "https://bensteel.substack.com/p/the-future-of-ai-generated-media",
+                    image_url: "/images/ai-generated-media.png",
+                    category: "substack"
+                },
+                {
+                    title: "The Sun",
                     date: new Date(2026, 2, 1),
                     description: "A short story about a whale and the sun",
                     url: "/articles/TheSun",
