@@ -3,8 +3,8 @@
         <canvas ref="shaderCanvas" class="shader-bg"></canvas>
         <div class="sections-container">
             <section class="section">
+                <img class="header-image" src="/images/the-sun-sun.png" alt="The Sun" />
                 <h1 class="article-title">{{ title }}</h1>
-                <h4 class="article-subtitle">{{ subtitle }}</h4>
                 <p class="article-date">{{ formatDate(date) }}</p>
                 <div class="article-content" v-html="renderedContent"></div>
             </section>
@@ -102,7 +102,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     vec4 noiseResult = os2NoiseWithDerivatives_ImproveXY(X);
     noiseResult = os2NoiseWithDerivatives_ImproveXY(X - noiseResult.xyz / 16.0);
     float value = noiseResult.w;
-    vec3 col = mix(vec3(0.08, 0.05, 0.2), vec3(1.0, 0.75, 0.3), 0.5 + 0.5 * value);
+    vec3 col = mix(vec3(0.08, 0.12, 0.38), vec3(1.0, 0.75, 0.3), 0.5 + 0.5 * value);
     fragColor = vec4(col, 1.0);
 }
 
@@ -161,7 +161,7 @@ function initWebGL(canvas) {
 export default {
     data() {
         return {
-            title: "The Whale and the Sun",
+            title: "The Sun",
             subtitle: "A short story about a whale and the sun",
             date: new Date('2026-03-01'),
             image_path: '',
@@ -190,8 +190,9 @@ export default {
         resizeCanvas() {
             const canvas = this.$refs.shaderCanvas
             if (!canvas) return
-            canvas.width = window.innerWidth
-            canvas.height = window.innerHeight
+            const scale = 0.5
+            canvas.width = Math.floor(window.innerWidth * scale)
+            canvas.height = Math.floor(window.innerHeight * scale)
             if (this.glCtx) {
                 this.glCtx.gl.viewport(0, 0, canvas.width, canvas.height)
             }
@@ -200,8 +201,9 @@ export default {
             const canvas = this.$refs.shaderCanvas
             if (!canvas) return
 
-            canvas.width = window.innerWidth
-            canvas.height = window.innerHeight
+            const scale = 0.5
+            canvas.width = Math.floor(window.innerWidth * scale)
+            canvas.height = Math.floor(window.innerHeight * scale)
 
             this.glCtx = initWebGL(canvas)
             if (!this.glCtx) return
@@ -260,6 +262,13 @@ export default {
 .section {
     background-color: lightgoldenrodyellow;
     padding: 30px 40px;
+    border-radius: 8px;
+}
+
+.header-image {
+    width: 50%;
+    display: block;
+    margin: 0 auto 20px;
     border-radius: 8px;
 }
 
