@@ -170,6 +170,13 @@ export default {
             ],
             projects: [
                 {
+                    title: "Pond",
+                    description: "Projecting my imaginary pond into the world, debuted at Friends Film Fest 2026",
+                    url: "https://www.youtube.com/watch?v=qB9Cer8rzaQ",
+                    code_url: "https://github.com/bendavidsteel/mysarum/tree/main/rust/pond",
+                    image_url: "/images/pond.png"
+                },
+                {
                     title: "Extended Particle Lenia Explorer",
                     description: "Interactive web app to explore instantiations of extended particle lenia",
                     url: "https://bendavidsteel.github.io/particle_lenia_datamap.html",
@@ -270,6 +277,12 @@ export default {
                 }
             ],
             descents: [
+                {
+                    title: "La Grande Cuve, Gaspesie",
+                    description: "Terrible crust but beautiful place, with Kate, Joe, and Mike",
+                    date: new Date(2026, 4, 7),
+                    image_url: "/images/lagrandecuve.jpg"
+                },
                 {
                     title: "Gulf of Slides, Main Slide",
                     description: "Amazing corn snow, with Joe and Mike",
