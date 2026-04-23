@@ -206,6 +206,12 @@ export default {
             ],
             media_mentions: [
                 {
+                    title: "A network of YouTube accounts is promoting U.S. annexation to Albertans, researchers say. It has 40 million views",
+                    outlet: "Toronto Star",
+                    date: new Date(2026, 4, 21),
+                    url: "https://www.thestar.com/news/investigations/a-network-of-youtube-accounts-is-promoting-us-annexation-to-albertans-researchers-say-it-has-40m-views/article_b26d9311-f3f1-4304-a443-360f51f6a558.html"
+                },
+                {
                     title: "Fact File: As Iran war escalates, fake videos and images proliferate online",
                     outlet: "The Canadian Press",
                     date: new Date(2026, 2, 11),
@@ -237,6 +243,12 @@ export default {
                 }
             ],
             reports: [
+                {
+                    title: "Slopaganda: The Inauthentic YouTube Network Selling Secession to Albertans",
+                    outlet: "MEO",
+                    date: new Date(2026, 4, 23),
+                    url: "https://www.cdmrn.ca/incident-slopaganda"
+                },
                 {
                     title: "Conspiratorial Claims and Institutional Distrust in Canada's Online Ecosystem",
                     outlet: "MEO",

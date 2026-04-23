@@ -5,6 +5,7 @@
       <a href="/about">about</a>
       <a href="/visuals">visuals</a>
       <a href="/writing">writing</a>
+      <a href="/films">films</a>
     </div>
   </header>
 </template>
