@@ -9,9 +9,10 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'
 import BaseCard from './BaseCard.vue'
 
-export default {
+export default defineComponent({
     components: {
         BaseCard
     },
@@ -40,7 +41,7 @@ export default {
             return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
         }
     }
-}
+})
 </script>
 
 <style scoped>

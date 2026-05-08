@@ -31,6 +31,14 @@ export default {
         return {
             posts: [
                 {
+                    title: "YouTube's Algorithm turned Dutch people into Alberta separatists",
+                    date: new Date(2026, 3, 27),
+                    description: "In which I marvel at the power of social networks to connect people with mutually empowering interests",
+                    url: "https://bensteel.substack.com/p/youtubes-algorithm-turned-dutch-people",
+                    image_url: "/images/youtube-alberta.png",
+                    category: "substack"
+                },
+                {
                     title: "The future of AI-generated media",
                     date: new Date(2026, 2, 11),
                     description: "My speculation on what is to come",
@@ -69,6 +77,14 @@ export default {
                     url: "https://bensteel.substack.com/p/theres-an-easy-solution-to-canadas",
                     image_url: "/images/tiktok-canada.webp",
                     category: "substack"
+                },
+                {
+                    title: "Particle Lenia Explorer",
+                    date: new Date(2025, 7, 20),
+                    description: "Mapping the space of extended particle Lenia using CLIP embeddings, PaCMAP, and Toponymy.",
+                    url: "/articles/ParticleLeniaExplorer",
+                    image_url: "/images/leniaexplorer.png",
+                    category: "blog"
                 }
             ]
         }
