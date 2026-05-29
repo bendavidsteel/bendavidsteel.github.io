@@ -40,8 +40,31 @@ function randomSeed() {
     return (Math.random() * (2 ** 32)) >>> 0;
 }
 
-const particleDescription = 
+// --- Implicit-evolution genome layout (must stay in sync between JS and WGSL) ---
+// Each particle carries a continuous identity vector (g) and interaction vector (a).
+// The asymmetric pairwise kernel weight is reconstructed as w_k = dot(g_sender, a_receiver),
+// re-implementing the discrete force matrix the way evoparticlelife does. The remaining
+// Lenia parameters (mu_k, sigma_k, mu_g, sigma_g, c_rep) are per-particle scalars that ride
+// along through the copy operator rather than being derived from any dot product.
+const SPECIES_DIM = 2;   // genome dimensionality
+const MAX_KERNELS = 4;   // per-particle storage capacity for kernels (evo mode caps kernelsCount here)
+const MAX_GROWTH = 4;    // per-particle storage capacity for growth functions
+// flat float offsets into a particle record
+const OFF_G    = 5;
+const OFF_A    = OFF_G + SPECIES_DIM;
+const OFF_MUK  = OFF_A + SPECIES_DIM;
+const OFF_SIGK = OFF_MUK + MAX_KERNELS;
+const OFF_MUG  = OFF_SIGK + MAX_KERNELS;
+const OFF_SIGG = OFF_MUG + MAX_GROWTH;
+const OFF_CREP = OFF_SIGG + MAX_GROWTH;
+const PARTICLE_FLOATS = OFF_CREP + 1; // total floats per particle record
+
+const particleDescription =
 `
+const SPECIES_DIM : u32 = ${SPECIES_DIM}u;
+const MAX_KERNELS : u32 = ${MAX_KERNELS}u;
+const MAX_GROWTH : u32 = ${MAX_GROWTH}u;
+
 struct Particle
 {
     x : f32,
@@ -49,6 +72,13 @@ struct Particle
     species : f32,
     energy : f32,
     force_magnitude : f32,
+    g : array<f32, SPECIES_DIM>,
+    a : array<f32, SPECIES_DIM>,
+    mu_k : array<f32, MAX_KERNELS>,
+    sigma_k : array<f32, MAX_KERNELS>,
+    mu_g : array<f32, MAX_GROWTH>,
+    sigma_g : array<f32, MAX_GROWTH>,
+    c_rep : f32,
 }
 `;
 
@@ -67,6 +97,7 @@ struct Camera
     center : vec2f,
     extent : vec2f,
     pixelsPerUnit : f32,
+    evoMode : f32,
 }
 `;
 
@@ -90,6 +121,7 @@ struct SimulationOptions
     actionVY : f32,
     actionForce : f32,
     actionRadius : f32,
+    evoMode : f32,
 }
 
 struct BinInfo
@@ -246,7 +278,12 @@ fn computeForces(@builtin(global_invocation_id) id : vec3u)
     var binXMax = binInfo.binId.x + 1;
     var binYMax = binInfo.binId.y + 1;
 
-    if (!loopingBorders) {
+    if (loopingBorders) {
+        // Periodic +/-1 stencil revisits a bin when a dimension has < 3 cells;
+        // shrink the span so each real bin is visited exactly once (no double-counting).
+        if (binInfo.gridSize.x < 3) { binXMin = binInfo.binId.x; binXMax = binInfo.binId.x + binInfo.gridSize.x - 1; }
+        if (binInfo.gridSize.y < 3) { binYMin = binInfo.binId.y; binYMax = binInfo.binId.y + binInfo.gridSize.y - 1; }
+    } else {
         binXMin = max(0, binXMin);
         binYMin = max(0, binYMin);
         binXMax = min(binInfo.gridSize.x - 1, binXMax);
@@ -261,6 +298,7 @@ fn computeForces(@builtin(global_invocation_id) id : vec3u)
 	let speciesCount = u32(simulationOptions.speciesCount);
 	let kernelsCount = u32(simulationOptions.kernelsCount);
 	let growthFuncsCount = u32(simulationOptions.growthFuncsCount);
+	let evoMode = simulationOptions.evoMode == 1.0;
     var U = 0.0;
     var grad_U = vec2f(0.0, 0.0);
     var grad_R = vec2f(0.0, 0.0);
@@ -295,15 +333,39 @@ fn computeForces(@builtin(global_invocation_id) id : vec3u)
                     }
                 }
 
-                let r = length(diff) / scale;
+                // Clamp distance so exactly-coincident particles can't produce NaN forces.
+                let r = max(length(diff), 1e-4) / scale;
 				let r_unit = diff / r;
-				
-				for (var k = 0u; k < kernelsCount; k += 1) {
-					let mu_k = params_k[species * speciesCount * kernelsCount * 3 + otherSpecies * kernelsCount * 3 + k * 3];
-                    let sigma_k = params_k[species * speciesCount * kernelsCount * 3 + otherSpecies * kernelsCount * 3 + k * 3 + 1];
-                    let w_k = params_k[species * speciesCount * kernelsCount * 3 + otherSpecies * kernelsCount * 3 + k * 3 + 2];
+
+				// In evo mode the per-pair kernel weight is the dot product of the
+				// sender's identity vector with the receiver's interaction vector.
+				var w_dot = 0.0;
+				if (evoMode) {
+					for (var d = 0u; d < SPECIES_DIM; d += 1) {
+						w_dot += other.g[d] * particle.a[d];
+					}
+				}
+
+				// Per-pair kernel param table base offset, hoisted out of the k-loop (classic mode).
+				let pairKernelBase = (species * speciesCount + otherSpecies) * kernelsCount * 3u;
+				let kc = select(kernelsCount, min(kernelsCount, MAX_KERNELS), evoMode);
+				for (var k = 0u; k < kc; k += 1) {
+					var mu_k : f32;
+					var sigma_k : f32;
+					var w_k : f32;
+					if (evoMode) {
+						mu_k = particle.mu_k[k];
+						sigma_k = particle.sigma_k[k];
+						w_k = w_dot;
+					} else {
+						mu_k = params_k[pairKernelBase + k * 3u];
+						sigma_k = params_k[pairKernelBase + k * 3u + 1u];
+						w_k = params_k[pairKernelBase + k * 3u + 2u];
+					}
                     let r_mu_k = r - mu_k;
                     let sigma2_k = sigma_k * sigma_k;
+                    // Skip kernels whose contribution is negligible (|r-mu| > 4 sigma => < exp(-16)).
+                    if (r_mu_k * r_mu_k > 16.0 * sigma2_k) { continue; }
                     let u_kernel = w_k * exp(-r_mu_k * r_mu_k / sigma2_k);
                     U += u_kernel; // Accumulate U
 
@@ -311,10 +373,16 @@ fn computeForces(@builtin(global_invocation_id) id : vec3u)
                     grad_U += dU_dr * r_unit; // Accumulate gradient of U
 				}
 
-                let this_c_rep = c_rep[species * speciesCount + otherSpecies];
-                let d_rep = 1.0;
-                let d_R = this_c_rep * max((d_rep - r) / d_rep, 0.0);
-                grad_R += d_R * r_unit;
+                // Short-range repulsion only acts within r < 1; skip the c_rep read otherwise.
+                if (r < 1.0) {
+                    var this_c_rep : f32;
+                    if (evoMode) {
+                        this_c_rep = particle.c_rep; // receiver's repulsion
+                    } else {
+                        this_c_rep = c_rep[species * speciesCount + otherSpecies];
+                    }
+                    grad_R += this_c_rep * (1.0 - r) * r_unit;
+                }
             }
         }
     }
@@ -322,9 +390,17 @@ fn computeForces(@builtin(global_invocation_id) id : vec3u)
     var dG_dU = 0.0;
     // let mu_g = 0.6;
     // let sigma_g = 0.15;
-    for (var k = 0u; k < growthFuncsCount; k += 1) {
-        let mu_g = params_g[species * growthFuncsCount * 2 + k * 2];
-        let sigma_g = params_g[species * growthFuncsCount * 2 + k * 2 + 1];
+    let gc = select(growthFuncsCount, min(growthFuncsCount, MAX_GROWTH), evoMode);
+    for (var k = 0u; k < gc; k += 1) {
+        var mu_g : f32;
+        var sigma_g : f32;
+        if (evoMode) {
+            mu_g = particle.mu_g[k];
+            sigma_g = particle.sigma_g[k];
+        } else {
+            mu_g = params_g[species * growthFuncsCount * 2 + k * 2];
+            sigma_g = params_g[species * growthFuncsCount * 2 + k * 2 + 1];
+        }
         // Calculate dG_dU for each growth function
         let sigma2_g = sigma_g * sigma_g;
         let U_mu_g = U - mu_g;
@@ -421,6 +497,226 @@ fn particleAdvance(@builtin(global_invocation_id) id : vec3u)
 }
 `;
 
+// Implicit-evolution pass: thresholded copy of a neighbour's genome (the asexual
+// "inheritance" operator from evoparticlelife) followed by occasional circle-based
+// mutation. Runs only when evo mode is enabled.
+const particleEvolveShader =
+`
+${particleDescription}
+${simulationOptionsDescription}
+
+struct EvolveOptions
+{
+    copyProb : f32,
+    maxCopyDist : f32,
+    maxSpeciesDist : f32,
+    copySeed : u32,
+    mutateActive : f32,
+    circleX : f32,
+    circleY : f32,
+    circleRadius : f32,
+    transformType : f32,
+    theta : f32,
+    scaleFactor : f32,
+    noiseScale : f32,
+    paramNoiseScale : f32,
+    mutateSeed : u32,
+    minSigma : f32,
+    pad : f32,
+}
+
+@group(0) @binding(0) var<storage, read> particlesSource : array<Particle>;
+@group(0) @binding(1) var<storage, read_write> particlesDestination : array<Particle>;
+@group(0) @binding(2) var<storage, read> binOffset : array<u32>;
+
+@group(1) @binding(0) var<uniform> simulationOptions : SimulationOptions;
+
+@group(2) @binding(0) var<uniform> evolveOptions : EvolveOptions;
+
+fn pcg(v : u32) -> u32
+{
+    let state = v * 747796405u + 2891336453u;
+    let word = ((state >> ((state >> 28u) + 4u)) ^ state) * 277803737u;
+    return (word >> 22u) ^ word;
+}
+
+fn rndf(seed : ptr<function, u32>) -> f32
+{
+    *seed = pcg(*seed);
+    return f32(*seed) / 4294967296.0;
+}
+
+fn gauss(seed : ptr<function, u32>) -> f32
+{
+    let u1 = max(rndf(seed), 1e-7);
+    let u2 = rndf(seed);
+    return sqrt(-2.0 * log(u1)) * cos(6.28318530718 * u2);
+}
+
+@compute @workgroup_size(64)
+fn evolve(@builtin(global_invocation_id) id : vec3u)
+{
+    if (id.x >= arrayLength(&particlesDestination)) {
+        return;
+    }
+
+    let src = particlesSource[id.x];   // sorted snapshot (genome matches destination)
+    var dst = particlesDestination[id.x]; // advanced position + current genome
+
+    let selfPos = vec2f(src.x, src.y);
+    let binInfo = getBinInfo(selfPos, simulationOptions);
+    let loopingBorders = simulationOptions.loopingBorders == 1.0;
+
+    let width = simulationOptions.right - simulationOptions.left;
+    let height = simulationOptions.top - simulationOptions.bottom;
+
+    var binXMin = binInfo.binId.x - 1;
+    var binYMin = binInfo.binId.y - 1;
+    var binXMax = binInfo.binId.x + 1;
+    var binYMax = binInfo.binId.y + 1;
+
+    if (loopingBorders) {
+        // Periodic +/-1 stencil revisits a bin when a dimension has < 3 cells;
+        // shrink the span so each real bin is visited exactly once (no double-counting).
+        if (binInfo.gridSize.x < 3) { binXMin = binInfo.binId.x; binXMax = binInfo.binId.x + binInfo.gridSize.x - 1; }
+        if (binInfo.gridSize.y < 3) { binYMin = binInfo.binId.y; binYMax = binInfo.binId.y + binInfo.gridSize.y - 1; }
+    } else {
+        binXMin = max(0, binXMin);
+        binYMin = max(0, binYMin);
+        binXMax = min(binInfo.gridSize.x - 1, binXMax);
+        binYMax = min(binInfo.gridSize.y - 1, binYMax);
+    }
+
+    let maxCopyDist = evolveOptions.maxCopyDist;
+    let maxSpeciesDist = evolveOptions.maxSpeciesDist;
+
+    // --- Copy: Gumbel-max weighted pick of one valid neighbour ---
+    var seed = pcg(id.x ^ evolveOptions.copySeed);
+    var bestScore = -1e30;
+    var bestIdx = 0xffffffffu;
+
+    for (var binX = binXMin; binX <= binXMax; binX += 1) {
+        for (var binY = binYMin; binY <= binYMax; binY += 1) {
+            let realBinX = (binX + binInfo.gridSize.x) % binInfo.gridSize.x;
+            let realBinY = (binY + binInfo.gridSize.y) % binInfo.gridSize.y;
+            let binIndex = realBinY * binInfo.gridSize.x + realBinX;
+            let binStart = binOffset[binIndex];
+            let binEnd = binOffset[binIndex + 1];
+
+            for (var j = binStart; j < binEnd; j += 1) {
+                if (j == id.x) { continue; }
+
+                let other = particlesSource[j];
+                var diff = vec2f(other.x, other.y) - selfPos;
+                if (loopingBorders) {
+                    if (abs(diff.x) >= width * 0.5) { diff.x -= sign(diff.x) * width; }
+                    if (abs(diff.y) >= height * 0.5) { diff.y -= sign(diff.y) * height; }
+                }
+
+                let r = length(diff);
+                if (r >= maxCopyDist) { continue; }
+
+                var sd = 0.0;
+                for (var d = 0u; d < SPECIES_DIM; d += 1) {
+                    let dd = src.g[d] - other.g[d];
+                    sd += dd * dd;
+                }
+                sd = sqrt(sd);
+                if (sd >= maxSpeciesDist) { continue; }
+
+                let weight = (1.0 - r / maxCopyDist) * exp(-sd * 2.302585);
+                if (weight <= 0.0) { continue; }
+
+                let u = max(rndf(&seed), 1e-7);
+                let score = log(weight) - log(-log(u));
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestIdx = j;
+                }
+            }
+        }
+    }
+
+    if (bestIdx != 0xffffffffu && rndf(&seed) < evolveOptions.copyProb) {
+        let donor = particlesSource[bestIdx];
+        // Element-wise copies (whole fixed-array assignment can crash some GPU backend compilers).
+        for (var d = 0u; d < SPECIES_DIM; d += 1) {
+            dst.g[d] = donor.g[d];
+            dst.a[d] = donor.a[d];
+        }
+        for (var k = 0u; k < MAX_KERNELS; k += 1) {
+            dst.mu_k[k] = donor.mu_k[k];
+            dst.sigma_k[k] = donor.sigma_k[k];
+        }
+        for (var k = 0u; k < MAX_GROWTH; k += 1) {
+            dst.mu_g[k] = donor.mu_g[k];
+            dst.sigma_g[k] = donor.sigma_g[k];
+        }
+        dst.c_rep = donor.c_rep;
+    }
+
+    // --- Mutation: one random disk per frame, applied to genomes inside it ---
+    if (evolveOptions.mutateActive == 1.0) {
+        var cdiff = selfPos - vec2f(evolveOptions.circleX, evolveOptions.circleY);
+        if (loopingBorders) {
+            if (abs(cdiff.x) >= width * 0.5) { cdiff.x -= sign(cdiff.x) * width; }
+            if (abs(cdiff.y) >= height * 0.5) { cdiff.y -= sign(cdiff.y) * height; }
+        }
+
+        if (length(cdiff) < evolveOptions.circleRadius) {
+            var mseed = pcg(id.x ^ evolveOptions.mutateSeed);
+            let tt = evolveOptions.transformType;
+            let noiseScale = evolveOptions.noiseScale;
+            let paramNoise = evolveOptions.paramNoiseScale;
+            let minSigma = evolveOptions.minSigma;
+
+            if (tt < 0.5) {
+                // additive noise on identity vector
+                for (var d = 0u; d < SPECIES_DIM; d += 1) {
+                    dst.g[d] += gauss(&mseed) * noiseScale;
+                }
+            } else if (tt < 1.5) {
+                // rotate the first two identity components
+                let c = cos(evolveOptions.theta);
+                let s = sin(evolveOptions.theta);
+                let g0 = dst.g[0];
+                let g1 = dst.g[1];
+                dst.g[0] = g0 * c - g1 * s;
+                dst.g[1] = g0 * s + g1 * c;
+            } else {
+                // scale the identity vector
+                for (var d = 0u; d < SPECIES_DIM; d += 1) {
+                    dst.g[d] *= evolveOptions.scaleFactor;
+                }
+            }
+
+            // interaction vector always gets a small jitter
+            for (var d = 0u; d < SPECIES_DIM; d += 1) {
+                dst.a[d] += gauss(&mseed) * noiseScale * 0.33;
+            }
+
+            // per-particle Lenia scalars also evolve (with clamps for stability)
+            for (var k = 0u; k < MAX_KERNELS; k += 1) {
+                dst.mu_k[k] = max(dst.mu_k[k] + gauss(&mseed) * paramNoise, 0.0);
+                dst.sigma_k[k] = max(dst.sigma_k[k] + gauss(&mseed) * paramNoise, minSigma);
+            }
+            for (var k = 0u; k < MAX_GROWTH; k += 1) {
+                dst.mu_g[k] += gauss(&mseed) * paramNoise;
+                dst.sigma_g[k] = max(dst.sigma_g[k] + gauss(&mseed) * paramNoise, minSigma);
+            }
+            dst.c_rep = max(dst.c_rep + gauss(&mseed) * paramNoise, 0.0);
+
+            for (var d = 0u; d < SPECIES_DIM; d += 1) {
+                dst.g[d] = clamp(dst.g[d], -1.0, 1.0);
+                dst.a[d] = clamp(dst.a[d], -1.0, 1.0);
+            }
+        }
+    }
+
+    particlesDestination[id.x] = dst;
+}
+`;
+
 const particleRenderShader =
 `
 ${particleDescription}
@@ -437,6 +733,22 @@ struct CircleVertexOut
     @builtin(position) position : vec4f,
     @location(0) offset : vec2f,
     @location(1) color : vec4f,
+}
+
+// In evo mode there are no discrete species, so derive a color from the genome
+// (mirrors species_to_color in the evoparticlelife reference renderer).
+fn particleColor(particle : Particle) -> vec4f
+{
+    if (camera.evoMode == 1.0) {
+        let s0 = particle.g[0];
+        let s1 = particle.g[1];
+        return vec4f(
+            0.5 + 0.5 * max(s0, 0.0),
+            0.5 + 0.5 * max(-s0, 0.0),
+            0.5 + 0.5 * (s1 + 1.0) * 0.5,
+            1.0);
+    }
+    return species[u32(particle.species)].color;
 }
 
 const offsets = array<vec2f, 6>(
@@ -457,7 +769,7 @@ fn vertexGlow(@builtin(vertex_index) id : u32) -> CircleVertexOut
     return CircleVertexOut(
         vec4f((position - camera.center) / camera.extent, 0.0, 1.0),
         offset,
-        species[u32(particle.species)].color
+        particleColor(particle)
     );
 }
 
@@ -478,7 +790,7 @@ fn vertexCircle(@builtin(vertex_index) id : u32) -> CircleVertexOut
     return CircleVertexOut(
         vec4f((position - camera.center) / camera.extent, 0.0, 1.0),
         offset,
-        species[u32(particle.species)].color
+        particleColor(particle)
     );
 }
 
@@ -498,7 +810,7 @@ fn vertexPoint(@builtin(vertex_index) id : u32) -> CircleVertexOut
     return CircleVertexOut(
         vec4f((position - camera.center) / camera.extent, 0.0, 1.0),
         offset,
-        species[u32(particle.species)].color
+        particleColor(particle)
     );
 }
 
@@ -671,7 +983,12 @@ fn song(time: f32) -> vec2<f32> {
     var binXMax = binInfo.binId.x + 1;
     var binYMax = binInfo.binId.y + 1;
 
-    if (!loopingBorders) {
+    if (loopingBorders) {
+        // Periodic +/-1 stencil revisits a bin when a dimension has < 3 cells;
+        // shrink the span so each real bin is visited exactly once (no double-counting).
+        if (binInfo.gridSize.x < 3) { binXMin = binInfo.binId.x; binXMax = binInfo.binId.x + binInfo.gridSize.x - 1; }
+        if (binInfo.gridSize.y < 3) { binYMin = binInfo.binId.y; binYMax = binInfo.binId.y + binInfo.gridSize.y - 1; }
+    } else {
         binXMin = max(0, binXMin);
         binYMin = max(0, binYMin);
         binXMax = min(binInfo.gridSize.x - 1, binXMax);
@@ -736,6 +1053,7 @@ var canvas;
 var context;
 var surfaceFormat;
 var device;
+var deviceLost = false;
 
 const hdrFormat = 'rgba16float';
 
@@ -754,6 +1072,20 @@ var prefixSumIterations = Math.ceil(Math.ceil(Math.log2(binCount + 1)) / 2) * 2;
 
 var customRules = false;
 
+// --- Implicit evolution state ---
+var evoMode = false;
+var evolveResourcesReady = false;  // evolve GPU objects are created lazily on first use
+var frameCounter = 0;
+var evoCopyProb = 0.04;        // chance a particle adopts its best neighbour's genome per frame
+var evoMutationProb = 0.1;     // chance a mutation disk fires per frame
+var evoMaxCopyDist = 12.0;     // world-space radius for copy candidates (<= maxForceRadius)
+var evoMaxSpeciesDist = 0.6;   // genome-distance threshold for copying
+var evoMinMutRadius = 10.0;    // mutation disk radius range (world units)
+var evoMaxMutRadius = 60.0;
+var evoNoiseScale = 0.3;       // genome mutation noise
+var evoParamNoiseScale = 0.1;  // per-particle Lenia scalar mutation noise
+var evoMinSigma = 0.05;        // clamp to keep kernel/growth widths positive
+
 var currentSystemDescription;
 
 var speciesBuffer;
@@ -767,6 +1099,7 @@ var binOffsetTempBuffer;
 var binPrefixSumStepSizeBuffer;
 var cameraBuffer;
 var simulationOptionsBuffer;
+var evolveOptionsBuffer;
 
 var blueNoiseTexture;
 var blueNoiseTextureView;
@@ -781,6 +1114,8 @@ var binFillSizeBindGroupLayout;
 var binPrefixSumBindGroupLayout;
 var particleSortBindGroupLayout;
 var particleComputeForcesBindGroupLayout;
+var particleEvolveBindGroupLayout;
+var evolveOptionsBindGroupLayout;
 var composeBindGroupLayout;
 
 var particleBufferBindGroup;
@@ -789,8 +1124,10 @@ var binFillSizeBindGroup;
 var binPrefixSumBindGroup = [null, null];
 var particleSortBindGroup;
 var particleComputeForcesBindGroup;
+var particleEvolveBindGroup;
 var cameraBindGroup;
 var simulationOptionsBindGroup;
+var evolveOptionsBindGroup;
 var composeBindGroup;
 
 var binClearSizePipeline;
@@ -799,6 +1136,7 @@ var binPrefixSumPipeline;
 var particleSortClearSizePipeline;
 var particleSortPipeline;
 var particleComputeForcesPipeline;
+var particleEvolvePipeline;
 var particleAdvancePipeline;
 var particleRenderGlowPipeline;
 var particleRenderPipeline;
@@ -925,6 +1263,12 @@ function formatExecutionTime(x) {
 
 function redraw()
 {
+    // If the GPU device was lost, stop the loop entirely instead of throwing
+    // (and flooding the console) on every subsequent frame.
+    if (deviceLost) {
+        return;
+    }
+
     if (framesInFlight > 2) {
         requestAnimationFrame(redraw);
         return;
@@ -971,8 +1315,45 @@ function redraw()
 
     actionDrag = [0.0, 0.0];
 
-    device.queue.writeBuffer(simulationOptionsBuffer, 0, new Float32Array([simulationBox[0][0], simulationBox[0][1], simulationBox[1][0], simulationBox[1][1], simDt, maxForceRadius, speciesCount, kernelsCount, growthFuncsCount, loopingBorders ? 1.0 : 0.0, actionX, actionY, actionVX, actionVY, actionForce, actionRadius]));
-    device.queue.writeBuffer(cameraBuffer, 0, new Float32Array([cameraCenter[0], cameraCenter[1], cameraExtentX, cameraExtentY, pixelsPerUnit]));
+    device.queue.writeBuffer(simulationOptionsBuffer, 0, new Float32Array([simulationBox[0][0], simulationBox[0][1], simulationBox[1][0], simulationBox[1][1], simDt, maxForceRadius, speciesCount, kernelsCount, growthFuncsCount, loopingBorders ? 1.0 : 0.0, actionX, actionY, actionVX, actionVY, actionForce, actionRadius, evoMode ? 1.0 : 0.0]));
+    device.queue.writeBuffer(cameraBuffer, 0, new Float32Array([cameraCenter[0], cameraCenter[1], cameraExtentX, cameraExtentY, pixelsPerUnit, evoMode ? 1.0 : 0.0]));
+
+    if (evoMode && !paused) {
+        frameCounter = (frameCounter + 1) >>> 0;
+
+        let mutateActive = 0.0, circleX = 0.0, circleY = 0.0, circleRadius = 0.0;
+        let transformType = 0.0, theta = 0.0, scaleFactor = 1.0;
+        if (Math.random() < evoMutationProb) {
+            mutateActive = 1.0;
+            circleX = simulationBox[0][0] + Math.random() * (simulationBox[0][1] - simulationBox[0][0]);
+            circleY = simulationBox[1][0] + Math.random() * (simulationBox[1][1] - simulationBox[1][0]);
+            circleRadius = evoMinMutRadius + Math.random() * (evoMaxMutRadius - evoMinMutRadius);
+            transformType = Math.floor(Math.random() * 3);
+            theta = (Math.random() * 2.0 - 1.0) * Math.PI;
+            scaleFactor = 0.5 + Math.random(); // 0.5 .. 1.5
+        }
+
+        const evoBuffer = new ArrayBuffer(64);
+        const evoF = new Float32Array(evoBuffer);
+        const evoU = new Uint32Array(evoBuffer);
+        evoF[0] = evoCopyProb;
+        evoF[1] = evoMaxCopyDist;
+        evoF[2] = evoMaxSpeciesDist;
+        evoU[3] = randomSeed();
+        evoF[4] = mutateActive;
+        evoF[5] = circleX;
+        evoF[6] = circleY;
+        evoF[7] = circleRadius;
+        evoF[8] = transformType;
+        evoF[9] = theta;
+        evoF[10] = scaleFactor;
+        evoF[11] = evoNoiseScale;
+        evoF[12] = evoParamNoiseScale;
+        evoU[13] = randomSeed();
+        evoF[14] = evoMinSigma;
+        evoF[15] = 0.0;
+        device.queue.writeBuffer(evolveOptionsBuffer, 0, evoBuffer);
+    }
 
     var queryHelper;
     if (timestampQuerySupported) {
@@ -1036,6 +1417,16 @@ function redraw()
         advanceComputePass.dispatchWorkgroups(Math.ceil(particleCount / 64));
 
         advanceComputePass.end();
+
+        if (evoMode) {
+            const evolveComputePass = encoder.beginComputePass({});
+            evolveComputePass.setBindGroup(0, particleEvolveBindGroup);
+            evolveComputePass.setBindGroup(1, simulationOptionsBindGroup);
+            evolveComputePass.setBindGroup(2, evolveOptionsBindGroup);
+            evolveComputePass.setPipeline(particleEvolvePipeline);
+            evolveComputePass.dispatchWorkgroups(Math.ceil(particleCount / 64));
+            evolveComputePass.end();
+        }
     }
  
     const hdrRenderPass = encoder.beginRenderPass({
@@ -1131,7 +1522,6 @@ function redraw()
 // create sound data on the GPU, read back to CPU and schedule for playback
 async function createAudioChunk(numSamplesPerChannelToBuffer) {
     if (paused || audioPaused || !audioCtx || audioCtx.state !== 'running') {
-        console.log('paused, not creating song chunk');
         setTimeout(createAudioChunk, 100, numSamplesPerChannelToBuffer); // Check again in 100ms
         return;
     }
@@ -1261,6 +1651,65 @@ function cleanupBuffers() {
 }
 
 
+// Evolve GPU objects (shader module, pipeline, layouts, uniform buffer, bind group) are
+// created lazily the first time implicit evolution is enabled. Creating them eagerly in
+// init() destabilized the WebGPU device even when the evolve pass was never dispatched, so
+// classic mode now allocates none of them.
+function initEvolveResources()
+{
+    if (evolveResourcesReady)
+        return;
+
+    evolveOptionsBuffer = device.createBuffer({
+        size: 64,
+        usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.UNIFORM,
+        label: "evolveOptionsBuffer",
+    });
+
+    particleEvolveBindGroupLayout = device.createBindGroupLayout({
+        entries: [
+            { binding: 0, visibility: GPUShaderStage.COMPUTE, buffer: { type: 'read-only-storage' } },
+            { binding: 1, visibility: GPUShaderStage.COMPUTE, buffer: { type: 'storage' } },
+            { binding: 2, visibility: GPUShaderStage.COMPUTE, buffer: { type: 'read-only-storage' } },
+        ],
+    });
+
+    evolveOptionsBindGroupLayout = device.createBindGroupLayout({
+        entries: [
+            { binding: 0, visibility: GPUShaderStage.COMPUTE, buffer: { type: 'uniform' } },
+        ],
+    });
+
+    evolveOptionsBindGroup = device.createBindGroup({
+        layout: evolveOptionsBindGroupLayout,
+        entries: [
+            { binding: 0, resource: { buffer: evolveOptionsBuffer } },
+        ],
+    });
+
+    const particleEvolveShaderModule = device.createShaderModule({
+        code: particleEvolveShader,
+    });
+
+    particleEvolvePipeline = device.createComputePipeline({
+        layout: device.createPipelineLayout({
+            bindGroupLayouts: [
+                particleEvolveBindGroupLayout,
+                simulationOptionsBindGroupLayout,
+                evolveOptionsBindGroupLayout,
+            ],
+            label: "particleEvolvePipelineLayout",
+        }),
+        compute: {
+            module: particleEvolveShaderModule,
+            entryPoint: 'evolve',
+        },
+        label: "particleEvolvePipeline",
+    });
+
+    evolveResourcesReady = true;
+}
+
 function loadSystem(systemDescription)
 {
     cleanupBuffers();
@@ -1276,6 +1725,20 @@ function loadSystem(systemDescription)
         systemDescription.loopingBorders = false;
 
     loopingBorders = systemDescription.loopingBorders;
+
+    if (systemDescription.evoMode == undefined)
+        systemDescription.evoMode = false;
+
+    evoMode = systemDescription.evoMode;
+
+    // Evo mode stores per-particle kernel/growth params in the Particle struct, which has
+    // fixed capacity MAX_KERNELS / MAX_GROWTH — clamp the configured counts to fit.
+    if (evoMode) {
+        kernelsCount = Math.min(kernelsCount, MAX_KERNELS);
+        growthFuncsCount = Math.min(growthFuncsCount, MAX_GROWTH);
+        systemDescription.kernelsCount = kernelsCount;
+        systemDescription.growthFuncsCount = growthFuncsCount;
+    }
 
     customRules = false;
 
@@ -1297,8 +1760,11 @@ function loadSystem(systemDescription)
     document.getElementById("simulationHeightSlider").value = Math.round(systemDescription.simulationSize[1] / 64);
     document.getElementById("simulationHeightText").innerText = `Height: ${2 * H}`;
     document.getElementById("loopingBorders").checked = loopingBorders;
+    document.getElementById("evoMode").checked = evoMode;
+    document.getElementById("evoControls").style.display = evoMode ? "block" : "none";
 
-    gridSize = [Math.ceil(systemDescription.simulationSize[0] / maxForceRadius), Math.ceil(systemDescription.simulationSize[1] / maxForceRadius)];
+    // Must match the GPU getBinInfo grid: derived from the (snapped) simulation box, not raw simulationSize.
+    gridSize = [Math.ceil((simulationBox[0][1] - simulationBox[0][0]) / maxForceRadius), Math.ceil((simulationBox[1][1] - simulationBox[1][0]) / maxForceRadius)];
     binCount = gridSize[0] * gridSize[1];
     prefixSumIterations = Math.ceil(Math.ceil(Math.log2(binCount + 1)) / 2) * 2;
 
@@ -1339,7 +1805,7 @@ function loadSystem(systemDescription)
 
     reloadParameters(systemDescription);
 
-    let numParticleAttributes = 5; // x, y, species, force_magnitude, energy
+    let numParticleAttributes = PARTICLE_FLOATS;
     const initialParticles = new Float32Array(particleCount * numParticleAttributes);
 
     for (var i = 0; i < speciesCount; ++i)
@@ -1349,6 +1815,35 @@ function loadSystem(systemDescription)
     var speciesWeightSum = 0.0;
     for (var i = 0; i < speciesCount; ++i)
         speciesWeightSum += systemDescription.species[i].spawnWeight;
+
+    // Tile-based genome seeding (evo mode): each spatial tile starts as one "species"
+    // (a shared genome + Lenia params), mirroring the initialization in evoparticlelife.
+    var evoTiles = null, evoTilesX = 1, evoTilesY = 1;
+    if (evoMode) {
+        const genomeRng = splitmix32((systemDescription.seed ^ 0x9e3779b9) >>> 0);
+        const tileWorld = maxForceRadius * 4;
+        evoTilesX = Math.max(1, Math.round((simulationBox[0][1] - simulationBox[0][0]) / tileWorld));
+        evoTilesY = Math.max(1, Math.round((simulationBox[1][1] - simulationBox[1][0]) / tileWorld));
+        evoTiles = [];
+        for (var t = 0; t < evoTilesX * evoTilesY; ++t) {
+            const g = [], a = [];
+            for (var d = 0; d < SPECIES_DIM; ++d) {
+                g.push(-1.0 + 2.0 * genomeRng());
+                a.push(-0.2 + 0.4 * genomeRng());
+            }
+            const mu_k = [], sigma_k = [];
+            for (var k = 0; k < MAX_KERNELS; ++k) {
+                mu_k.push(1.0 + 4.0 * genomeRng());
+                sigma_k.push(0.2 + 1.3 * genomeRng());
+            }
+            const mu_g = [], sigma_g = [];
+            for (var k = 0; k < MAX_GROWTH; ++k) {
+                mu_g.push(-2.0 + 4.0 * genomeRng());
+                sigma_g.push(0.8 + 0.2 * genomeRng());
+            }
+            evoTiles.push({ g, a, mu_k, sigma_k, mu_g, sigma_g, c_rep: 1.0 + genomeRng() });
+        }
+    }
 
     for (var i = 0; i < particleCount; ++i)
     {
@@ -1363,13 +1858,35 @@ function loadSystem(systemDescription)
             speciesPick -= systemDescription.species[j].spawnWeight;
         }
 
-        initialParticles[numParticleAttributes * i + 0] = simulationBox[0][0] + Math.random() * (simulationBox[0][1] - simulationBox[0][0]);
-        initialParticles[numParticleAttributes * i + 1] = simulationBox[1][0] + Math.random() * (simulationBox[1][1] - simulationBox[1][0]);
-        initialParticles[numParticleAttributes * i + 2] = speciesId;
+        const px = simulationBox[0][0] + Math.random() * (simulationBox[0][1] - simulationBox[0][0]);
+        const py = simulationBox[1][0] + Math.random() * (simulationBox[1][1] - simulationBox[1][0]);
+        const base = numParticleAttributes * i;
+        initialParticles[base + 0] = px;
+        initialParticles[base + 1] = py;
+        initialParticles[base + 2] = speciesId;
+
+        if (evoMode) {
+            const tx = Math.min(evoTilesX - 1, Math.floor((px - simulationBox[0][0]) / (simulationBox[0][1] - simulationBox[0][0]) * evoTilesX));
+            const ty = Math.min(evoTilesY - 1, Math.floor((py - simulationBox[1][0]) / (simulationBox[1][1] - simulationBox[1][0]) * evoTilesY));
+            const tile = evoTiles[ty * evoTilesX + tx];
+            for (var d = 0; d < SPECIES_DIM; ++d) {
+                initialParticles[base + OFF_G + d] = tile.g[d];
+                initialParticles[base + OFF_A + d] = tile.a[d];
+            }
+            for (var k = 0; k < MAX_KERNELS; ++k) {
+                initialParticles[base + OFF_MUK + k] = tile.mu_k[k];
+                initialParticles[base + OFF_SIGK + k] = tile.sigma_k[k];
+            }
+            for (var k = 0; k < MAX_GROWTH; ++k) {
+                initialParticles[base + OFF_MUG + k] = tile.mu_g[k];
+                initialParticles[base + OFF_SIGG + k] = tile.sigma_g[k];
+            }
+            initialParticles[base + OFF_CREP] = tile.c_rep;
+        }
     }
 
     particleBuffer = device.createBuffer({
-        size: particleCount * numParticleAttributes * 4, // 5 floats per particle: x, y, species, force_magnitude, energy
+        size: particleCount * numParticleAttributes * 4, // PARTICLE_FLOATS per particle: x, y, species, energy, force, genome (g/a), per-particle Lenia params
         usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC | GPUBufferUsage.STORAGE,
         label: "particleBuffer",
     });
@@ -1574,6 +2091,19 @@ function loadSystem(systemDescription)
             }
         ],
     });
+
+    if (evoMode) {
+        initEvolveResources();
+        particleEvolveBindGroup = device.createBindGroup({
+            label: "particleEvolveBindGroup",
+            layout: particleEvolveBindGroupLayout,
+            entries: [
+                { binding: 0, resource: { buffer: particleTempBuffer } },
+                { binding: 1, resource: { buffer: particleBuffer } },
+                { binding: 2, resource: { buffer: binOffsetBuffer } },
+            ],
+        });
+    }
 }
 
 function loadParametersFromJson(systemDescription, paramsJson)
@@ -1790,7 +2320,12 @@ function resize()
 {
     if (!canvas)
         return;
-    
+
+    // resize() can fire (window load/resize) before init() has created the device
+    // or after the device is lost — bail rather than throwing on createTexture.
+    if (!device || deviceLost)
+        return;
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -2046,7 +2581,11 @@ async function init()
     }
 
     device.lost.then((info) => {
-        console.error(`WebGPU device was lost: ${info.message}`);
+        // 'destroyed' is the normal reason on navigation/teardown — don't treat as an error.
+        deviceLost = true;
+        if (info.reason !== 'destroyed') {
+            console.error(`WebGPU device was lost: ${info.message}`);
+        }
     });
 
     // Add more aggressive error handling
@@ -2054,16 +2593,22 @@ async function init()
     device.pushErrorScope('out-of-memory');
     device.pushErrorScope('internal');
 
-    setInterval(async () => {
+    const errorScopeInterval = setInterval(async () => {
+        // Once the device is lost, popErrorScope throws "Instance dropped" every tick —
+        // stop the watchdog so it doesn't flood the console.
+        if (deviceLost) {
+            clearInterval(errorScopeInterval);
+            return;
+        }
+
         const validationError = await device.popErrorScope();
         const oomError = await device.popErrorScope();
         const internalError = await device.popErrorScope();
-        
+
         if (validationError || oomError || internalError) {
-            const info = await module.getCompilationInfo();
-            console.error('GPU Errors detected:', { validationError, oomError, internalError, info });
+            console.error('GPU Errors detected:', { validationError, oomError, internalError });
         }
-        
+
         // Re-push scopes
         device.pushErrorScope('validation');
         device.pushErrorScope('out-of-memory');
@@ -2083,7 +2628,7 @@ async function init()
     });
 
     simulationOptionsBuffer = device.createBuffer({
-        size: 64,
+        size: 128,
         usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.UNIFORM,
     });
 
@@ -2760,6 +3305,30 @@ function updateLoopingBorders()
     loopingBorders = newLoopingBorders;
 }
 
+function updateEvoMode()
+{
+    const newEvoMode = document.getElementById("evoMode").checked;
+    document.getElementById("evoControls").style.display = newEvoMode ? "block" : "none";
+
+    // Toggling changes the particle-buffer contents (genome seeding), so reload the system.
+    currentSystemDescription.evoMode = newEvoMode;
+    currentSystemDescription.seed = randomSeed();
+    loadSystem(generateSystem(currentSystemDescription));
+}
+
+function updateEvoParams()
+{
+    evoCopyProb = Number(document.getElementById("evoCopyProbSlider").value);
+    evoMutationProb = Number(document.getElementById("evoMutationProbSlider").value);
+    evoMaxCopyDist = Number(document.getElementById("evoCopyDistSlider").value);
+    evoMaxSpeciesDist = Number(document.getElementById("evoSpeciesDistSlider").value);
+
+    document.getElementById("evoCopyProbText").innerText = `Copy prob: ${evoCopyProb.toFixed(3)}`;
+    document.getElementById("evoMutationProbText").innerText = `Mutation prob: ${evoMutationProb.toFixed(2)}`;
+    document.getElementById("evoCopyDistText").innerText = `Copy distance: ${evoMaxCopyDist}`;
+    document.getElementById("evoSpeciesDistText").innerText = `Genome threshold: ${evoMaxSpeciesDist.toFixed(2)}`;
+}
+
 function updatePlayAudio()
 {
     const newPlayAudio = document.getElementById("playAudio").checked;
@@ -3059,6 +3628,32 @@ async function fullscreen()
                 <input type="checkbox" id="loopingBorders" onclick="updateLoopingBorders();" />
                 <span class="customCheckbox"></span>
             </label>
+            <label class="checkboxContainer">
+                Implicit evolution
+                <input type="checkbox" id="evoMode" onclick="updateEvoMode();" />
+                <span class="customCheckbox"></span>
+            </label>
+            <div id="evoControls" style="display: none;">
+                <div class="sliderContainer">
+                    <input type="range" min="0" max="0.5" step="0.005" value="0.04" class="slider" id="evoCopyProbSlider" oninput="updateEvoParams();">
+                    <span id="evoCopyProbText">Copy prob: 0.04</span>
+                </div>
+                <div class="rowBreak"></div>
+                <div class="sliderContainer">
+                    <input type="range" min="0" max="1" step="0.01" value="0.1" class="slider" id="evoMutationProbSlider" oninput="updateEvoParams();">
+                    <span id="evoMutationProbText">Mutation prob: 0.10</span>
+                </div>
+                <div class="rowBreak"></div>
+                <div class="sliderContainer">
+                    <input type="range" min="1" max="32" step="0.5" value="12" class="slider" id="evoCopyDistSlider" oninput="updateEvoParams();">
+                    <span id="evoCopyDistText">Copy distance: 12</span>
+                </div>
+                <div class="rowBreak"></div>
+                <div class="sliderContainer">
+                    <input type="range" min="0.05" max="2.8" step="0.05" value="0.6" class="slider" id="evoSpeciesDistSlider" oninput="updateEvoParams();">
+                    <span id="evoSpeciesDistText">Genome threshold: 0.60</span>
+                </div>
+            </div>
             <div class="rowBreak"></div>
             <table id="buttonsTable">
                 <tr>
