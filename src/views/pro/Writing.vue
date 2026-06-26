@@ -31,6 +31,14 @@ export default {
         return {
             posts: [
                 {
+                    title: "Break-even Viewership on YouTube is in Free-Fall",
+                    date: new Date(2026, 4, 25),
+                    description: "What happens when content producers can break-even for a video on one viewer?",
+                    url: "https://bensteel.substack.com/p/break-even-viewership-on-youtube",
+                    image_url: "/images/youtube-breakeven.png",
+                    category: "substack"
+                },
+                {
                     title: "YouTube's Algorithm turned Dutch people into Alberta separatists",
                     date: new Date(2026, 3, 27),
                     description: "In which I marvel at the power of social networks to connect people with mutually empowering interests",
