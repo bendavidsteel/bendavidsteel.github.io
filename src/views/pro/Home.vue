@@ -206,6 +206,18 @@ export default {
             ],
             media_mentions: [
                 {
+                    title: "Some AI chatbots are much better at blocking harmful content than others, audit shows",
+                    outlet: "The Logic",
+                    date: new Date(2026, 5, 29),
+                    url: "https://thelogic.co/briefing/some-ai-chatbots-are-much-better-at-blocking-harmful-content-than-others-audit-shows/"
+                },
+                {
+                    title: "Dutch YouTube creators behind Alberta separatist videos getting millions of views",
+                    outlet: "CBC News",
+                    date: new Date(2026, 3, 23),
+                    url: "https://www.cbc.ca/news/canada/alberta-separatist-youtube-channels-netherlands-9.7174719"
+                },
+                {
                     title: "A network of YouTube accounts is promoting U.S. annexation to Albertans, researchers say. It has 40 million views",
                     outlet: "Toronto Star",
                     date: new Date(2026, 4, 21),
