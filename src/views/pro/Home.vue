@@ -206,6 +206,12 @@ export default {
             ],
             media_mentions: [
                 {
+                    title: "My Newsreel Now",
+                    outlet: "Newsreel",
+                    date: new Date(2026, 6, 9),
+                    url: "https://www.youtube.com/watch?v=q3U9sLWa90o"
+                },
+                {
                     title: "Some AI chatbots are much better at blocking harmful content than others, audit shows",
                     outlet: "The Logic",
                     date: new Date(2026, 5, 29),
