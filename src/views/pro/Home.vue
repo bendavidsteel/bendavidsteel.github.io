@@ -267,6 +267,12 @@ export default {
                             outlet: "The Logic",
                             date: new Date(2026, 5, 29),
                             url: "https://thelogic.co/briefing/some-ai-chatbots-are-much-better-at-blocking-harmful-content-than-others-audit-shows/"
+                        },
+                        {
+                            title: "Experts call for 'mystery shopping' of AI chatbots to test if they are safe",
+                            outlet: "The Globe and Mail",
+                            date: new Date(2026, 5, 29),
+                            url: "https://www.theglobeandmail.com/politics/article-experts-call-for-mystery-shopping-of-ai-chatbots-to-test-if-they-are/"
                         }
                     ]
                 },
