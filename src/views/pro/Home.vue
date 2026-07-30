@@ -10,7 +10,7 @@
                 <div>
                     <h4 id='descrip'>
                         PhD candidate with <a class="link" href="https://derekruths.com/">Derek Ruths</a> in the <a class="link" href="http://networkdynamics.org/">Network Dynamics Lab</a><br>
-                        researcher @ <a class="link" href="https://meo.ca/">Media Ecosystem Observatory</a><br>
+                        researcher @ <a class="link" href="https://mediatechdemocracy.com/en/meo/">Media Ecosystem Observatory</a><br>
                         computational social science<br>
                         climber | skier | backpacker
                     </h4>
@@ -259,7 +259,7 @@ export default {
                     authors: "B. Steel, T. Owen, A. Bridgman",
                     outlet: "Centre for Media, Technology and Democracy",
                     date: new Date(2026, 5, 25),
-                    url: "https://www.mediatechdemocracy.com/s/ai-online-harms-brief_V2.pdf",
+                    url: "https://mediatechdemocracy.com/en/publications/online-harms-ai-audit-technical-brief_2026/",
                     image_url: "/images/ohaudit-brief.png",
                     mentions: [
                         {
@@ -281,7 +281,7 @@ export default {
                     authors: "B. Steel, T. Owen, A. Bridgman",
                     outlet: "Centre for Media, Technology and Democracy",
                     date: new Date(2026, 5, 1),
-                    url: "https://www.mediatechdemocracy.com/s/ai-online-harms-policy-memo_V2.pdf",
+                    url: "https://mediatechdemocracy.com/en/publications/online-harms-ai-audit-policy-memo_2026/",
                     image_url: "/images/ohaudit-policy.png"
                 },
                 {
@@ -289,7 +289,7 @@ export default {
                     authors: "C. Ross, B. Steel, Z. Pehlivan, M. Desblancs-Patel, A. Bridgman",
                     outlet: "MEO",
                     date: new Date(2026, 4, 23),
-                    url: "https://www.cdmrn.ca/slopaganda-the-inauthentic-youtube-network-selling-secession-to-albertans",
+                    url: "https://mediatechdemocracy.com/en/publications/slopaganda-alberta-secession_2026/",
                     image_url: "/images/slopaganda.png",
                     mentions: [
                         {
@@ -335,7 +335,7 @@ export default {
                     authors: "M. Desblancs-Patel, E. Chan, M. Lavigne, C. Ross, D. Hobson, B. Steel, H. A. Hayes",
                     outlet: "MEO",
                     date: new Date(2026, 1, 23),
-                    url: "https://meo.ca/work/conspiratorial-claims-and-institutional-distrust-in-canadas-online-ecosystem",
+                    url: "https://mediatechdemocracy.com/en/publications/conspiracy-distrust_2026/",
                     image_url: "/images/conspiratorial-claims.png",
                     mentions: [
                         {
@@ -363,7 +363,7 @@ export default {
                     authors: "B. Steel, D. Jiang, M. Lavigne",
                     outlet: "MEO",
                     date: new Date(2025, 10, 26),
-                    url: "https://www.cdmrn.ca/publications/understanding-the-international-reaction-to-the-assassination-of-charlie-kirk",
+                    url: "https://mediatechdemocracy.com/en/publications/charlie-kirk-debrief_2026/",
                     image_url: "/images/shockwaves-tiktok.webp"
                 },
                 {
@@ -371,7 +371,7 @@ export default {
                     authors: "D. Hobson, J.-R. Roy, B. Steel, A. Bridgman",
                     outlet: "MEO",
                     date: new Date(2024, 10, 5),
-                    url: "https://www.cdmrn.ca/publications/russianfundingcanadianinfluencers/iu6-relevance-role-of-tenet-media-personalities-in-cdn-political-discussion",
+                    url: "https://mediatechdemocracy.com/en/publications/tenet-russia-funding_2024/",
                     image_url: "/images/tenet-media.webp"
                 }
             ],

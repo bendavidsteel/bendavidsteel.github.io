@@ -7,7 +7,7 @@
             <h2 id='about-title'>Hello fellow web wanderer!</h2>
             <p id='main-about'>
               <!--TODO improve formatting-->
-              From the UK, living in Montreal. Former software developer, currently finishing up my PhD in Computer Science, and now working at the <a href="https://www.mediatechdemocracy.com/" target="_blank" rel="noopener">Centre for Media Technology and Democracy</a> where I'm doing computational social science to inform public policy. <br>
+              From the UK, living in Montreal. Former software developer, currently finishing up my PhD in Computer Science, and now working at the <a href="https://mediatechdemocracy.com/en/" target="_blank" rel="noopener">Centre for Media Technology and Democracy</a> where I'm doing computational social science to inform public policy. <br>
               I fill my time outside research with climbing, backpacking, skiing, and other hobbies. <br>
               I'm trying to find the balance between creating positive contributions to society and enjoying my life.
               <br>
