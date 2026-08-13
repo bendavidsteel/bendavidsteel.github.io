@@ -31,6 +31,14 @@ export default {
         return {
             posts: [
                 {
+                    title: "Le Soleil",
+                    date: new Date(2026, 7, 13),
+                    description: "A French translation of my short story 'The Sun'",
+                    url: "/articles/LeSoleil",
+                    image_url: "/images/asahi.webp",
+                    category: "fiction"
+                },
+                {
                     title: "Break-even Viewership on YouTube is in Free-Fall",
                     date: new Date(2026, 4, 25),
                     description: "What happens when content producers can break-even for a video on one viewer?",
