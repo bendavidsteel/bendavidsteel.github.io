@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "serve": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
-    "build": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build",
-    "lint": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service lint"
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build && node scripts/prerender.js && node scripts/sitemap.js",
+    "lint": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service lint",
+    "prerender": "node scripts/prerender.js",
+    "sitemap": "node scripts/sitemap.js"
   },
   "dependencies": {
     "@traptitech/markdown-it-katex": "^3.6.0",
@@ -37,6 +39,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^8.57.1",
     "eslint-plugin-vue": "^7.0.0",
+    "puppeteer-core": "^25.9.0",
     "typescript": "^5.8.3"
   },
   "eslintConfig": {
@@ -58,7 +61,5 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ],
-  "_id": "@",
-  "readme": "ERROR: No README data found!"
+  ]
 }
