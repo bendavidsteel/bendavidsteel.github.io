@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bendavidsteel.github.io/sitemap.xml
