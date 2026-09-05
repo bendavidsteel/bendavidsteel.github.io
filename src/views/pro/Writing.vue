@@ -31,6 +31,14 @@ export default {
         return {
             posts: [
                 {
+                    title: "The Canadian AI Safety Institute should have more public presence",
+                    date: new Date(2026, 8, 1),
+                    description: "CAISI needs to re-claim its acronym",
+                    url: "https://bendavidsteel.substack.com/p/the-canadian-ai-safety-institute",
+                    image_url: "/images/caisi.png",
+                    category: "substack"
+                },
+                {
                     title: "Le Soleil",
                     date: new Date(2026, 7, 13),
                     description: "A French translation of my short story 'The Sun'",
@@ -42,7 +50,7 @@ export default {
                     title: "Break-even Viewership on YouTube is in Free-Fall",
                     date: new Date(2026, 4, 25),
                     description: "What happens when content producers can break-even for a video on one viewer?",
-                    url: "https://bensteel.substack.com/p/break-even-viewership-on-youtube",
+                    url: "https://bendavidsteel.substack.com/p/break-even-viewership-on-youtube",
                     image_url: "/images/youtube-breakeven.png",
                     category: "substack"
                 },
@@ -50,7 +58,7 @@ export default {
                     title: "YouTube's Algorithm turned Dutch people into Alberta separatists",
                     date: new Date(2026, 3, 27),
                     description: "In which I marvel at the power of social networks to connect people with mutually empowering interests",
-                    url: "https://bensteel.substack.com/p/youtubes-algorithm-turned-dutch-people",
+                    url: "https://bendavidsteel.substack.com/p/youtubes-algorithm-turned-dutch-people",
                     image_url: "/images/youtube-alberta.png",
                     category: "substack"
                 },
@@ -58,7 +66,7 @@ export default {
                     title: "The future of AI-generated media",
                     date: new Date(2026, 2, 11),
                     description: "My speculation on what is to come",
-                    url: "https://bensteel.substack.com/p/the-future-of-ai-generated-media",
+                    url: "https://bendavidsteel.substack.com/p/the-future-of-ai-generated-media",
                     image_url: "/images/ai-generated-media.png",
                     category: "substack"
                 },
@@ -82,7 +90,7 @@ export default {
                     title: "Moltbook is good, but should be better",
                     date: new Date(2026, 1, 16),
                     description: "Eliciting AI capabilities through social media is good, and should be improved.",
-                    url: "https://bensteel.substack.com/p/moltbook-is-good-but-should-be-better",
+                    url: "https://bendavidsteel.substack.com/p/moltbook-is-good-but-should-be-better",
                     image_url: "/images/moltbook.png",
                     category: "substack"
                 },
@@ -90,7 +98,7 @@ export default {
                     title: "There's an easy solution to Canada's TikTok problem",
                     date: new Date(2026, 1, 6),
                     description: "TikTok is uniquely blocking research access in Canada for no apparent reason. We're in the dark when it comes to online harms.",
-                    url: "https://bensteel.substack.com/p/theres-an-easy-solution-to-canadas",
+                    url: "https://bendavidsteel.substack.com/p/theres-an-easy-solution-to-canadas",
                     image_url: "/images/tiktok-canada.webp",
                     category: "substack"
                 },
