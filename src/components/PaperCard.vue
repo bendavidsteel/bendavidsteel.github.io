@@ -1,6 +1,6 @@
 <template>
-  <div class="paper-card-wrapper">
-    <base-card :image_url="image_url" :imageAlt="title">
+  <div class="paper-card-wrapper" :class="{ compact }">
+    <base-card :image_url="compact ? undefined : image_url" :imageAlt="title">
         <a v-if="url" :href="url" target="_blank" class="title-link">
             <h3 class="title">{{ title }}</h3>
         </a>
@@ -40,7 +40,8 @@ export default {
         code_url: String,
         image_url: String,
         tag: String,
-        mentions: Array
+        mentions: Array,
+        compact: Boolean
     }
 }
 </script>
@@ -143,6 +144,28 @@ export default {
 
 .coverage-outlet:hover {
     text-decoration: underline;
+}
+
+.compact :deep(.base-card) {
+    margin-bottom: 12px;
+}
+
+.compact :deep(.card-content) {
+    padding: 12px 16px;
+    gap: 4px;
+}
+
+.compact .title {
+    font-size: 17px;
+}
+
+.compact .authors,
+.compact .venue {
+    font-size: 14px;
+}
+
+.compact .coverage {
+    margin-top: 4px;
 }
 
 /* allow cards to grow when they carry coverage instead of clipping */

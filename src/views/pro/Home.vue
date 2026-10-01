@@ -32,7 +32,8 @@
                             :code_url="item.code_url"
                             :image_url="item.image_url"
                             :tag="item.tag"
-                            :mentions="item.mentions">
+                            :mentions="item.mentions"
+                            :compact="item.compact">
                         </paper-card>
                     </div>
                 </div>
@@ -126,6 +127,7 @@ export default {
                 image_url: r.image_url,
                 date: r.date,
                 mentions: r.mentions,
+                compact: r.compact,
                 tag: 'report'
             }));
             return [...papers, ...reports].sort((a, b) => b.date - a.date);
@@ -139,6 +141,15 @@ export default {
         return {
             posts: article_data,
             papers: [
+                {
+                    title: "Mapping the Winds of Stance Dynamics using Potential Landscape Models",
+                    authors: "B. Steel, D. Ruths",
+                    venue: "Under review",
+                    year: 2026,
+                    date: new Date(2026, 8, 15),
+                    url: "https://arxiv.org/abs/2605.20363",
+                    image_url: "/images/stance-dynamics.png"
+                },
                 {
                     title: "Just Another Hour on TikTok: ID sampling to obtain a complete slice of TikTok",
                     authors: "B. Steel, M. Schirmer, D. Ruths, J. Pfeffer",
@@ -194,7 +205,7 @@ export default {
                     year: 2024,
                     date: new Date(2024, 7, 1),
                     url: "https://aclanthology.org/2024.wassa-1.16/",
-                    image_url: "/images/redditstance.png"
+                    compact: true
                 }
             ],
             projects: [
@@ -254,6 +265,37 @@ export default {
                 }
             ],
             reports: [
+                {
+                    title: "Weekly Update 3: Quebec's First Election in the Age of AI",
+                    outlet: "Centre for Media, Technology and Democracy",
+                    date: new Date(2026, 8, 18),
+                    url: "https://mediatechdemocracy.com/en/publications/qc26-weekly-update-3_2026/",
+                    image_url: "/images/qc26-ai-election.png",
+                    mentions: [
+                        {
+                            title: "ChatGPT s'appuie sur un site web généré par l'IA pour conseiller les électeurs québécois",
+                            outlet: "Radio-Canada",
+                            date: new Date(2026, 8, 22),
+                            url: "https://ici.radio-canada.ca/nouvelle/2286074/ia-lequebecvote-election-2026"
+                        }
+                    ]
+                },
+                {
+                    title: "Alberta's Referendum, Online: Influencers, AI Content, Foreign Interest, and the Attention Economy Ahead of the October 19 Vote",
+                    authors: "C. Ross, B. Steel, D. Hobson, S. Park, E. Chan, B. Wood-MacLean, M. Desblancs-Patel, A. Bridgman",
+                    outlet: "Centre for Media, Technology and Democracy",
+                    date: new Date(2026, 8, 10),
+                    url: "https://mediatechdemocracy.com/en/publications/ab-referendum-online_2026/",
+                    image_url: "/images/ab-referendum-online.png",
+                    mentions: [
+                        {
+                            title: "Separatists dominating Alberta referendum conversation online: report",
+                            outlet: "CBC News",
+                            date: new Date(2026, 8, 10),
+                            url: "https://www.cbc.ca/news/canada/calgary/alberta-separation-online-influencer-study-9.7338861"
+                        }
+                    ]
+                },
                 {
                     title: "Online Harms AI Audit: Technical Brief",
                     authors: "B. Steel, T. Owen, A. Bridgman",
@@ -336,7 +378,7 @@ export default {
                     outlet: "MEO",
                     date: new Date(2026, 1, 23),
                     url: "https://mediatechdemocracy.com/en/publications/conspiracy-distrust_2026/",
-                    image_url: "/images/conspiratorial-claims.png",
+                    compact: true,
                     mentions: [
                         {
                             title: "Researchers studied who's spreading the most conspiracy theories in Canada. Here's what they found",
@@ -364,7 +406,7 @@ export default {
                     outlet: "MEO",
                     date: new Date(2025, 10, 26),
                     url: "https://mediatechdemocracy.com/en/publications/charlie-kirk-debrief_2026/",
-                    image_url: "/images/shockwaves-tiktok.webp"
+                    compact: true
                 },
                 {
                     title: "The relevance and role of Tenet Media personalities in Canadian political discussion",
@@ -372,7 +414,7 @@ export default {
                     outlet: "MEO",
                     date: new Date(2024, 10, 5),
                     url: "https://mediatechdemocracy.com/en/publications/tenet-russia-funding_2024/",
-                    image_url: "/images/tenet-media.webp"
+                    compact: true
                 }
             ],
             ascents: [
