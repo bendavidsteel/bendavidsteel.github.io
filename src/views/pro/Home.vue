@@ -293,6 +293,12 @@ export default {
                             outlet: "CBC News",
                             date: new Date(2026, 8, 10),
                             url: "https://www.cbc.ca/news/canada/calgary/alberta-separation-online-influencer-study-9.7338861"
+                        },
+                        {
+                            title: "Experts eye Alberta referendum as case study on impacts of artificial intelligence",
+                            outlet: "CityNews Calgary",
+                            date: new Date(2026, 9, 3),
+                            url: "https://calgary.citynews.ca/2026/10/03/experts-eye-alberta-referendum-as-case-study-on-impacts-of-artificial-intelligence/"
                         }
                     ]
                 },
